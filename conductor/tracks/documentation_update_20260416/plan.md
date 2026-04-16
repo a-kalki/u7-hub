@@ -10,10 +10,10 @@
 - [x] Task: Обновить `conductor/tech-stack.md`. Описать структуру `src/community` и статические маршруты. [sha: 7ec52a2]
 - [x] Task: Conductor - User Manual Verification 'Обновление Существующих Документов' (Protocol in workflow.md) [sha: 7ec52a2]
 
-## Phase 3: Создание Новой Документации [checkpoint: ]
-- [ ] Task: Создать файл `conductor/community.md` с описанием концепции, разделов и 4 образовательных модулей.
-- [ ] Task: Обновить `conductor/index.md`, добавив ссылку на `community.md`.
-- [ ] Task: Conductor - User Manual Verification 'Создание Новой Документации' (Protocol in workflow.md)
+## Phase 3: Создание Новой Документации [checkpoint: 0807c32]
+- [x] Task: Создать файл `conductor/community.md` с описанием концепции, разделов и 4 образовательных модулей. [sha: 327227b]
+- [x] Task: Обновить `conductor/index.md`, добавив ссылку на `community.md`. [sha: 0807c32]
+- [x] Task: Conductor - User Manual Verification 'Создание Новой Документации' (Protocol in workflow.md) [sha: 0807c32]
 
 ## Phase 4: Финальная Проверка [checkpoint: ]
 - [ ] Task: Сверка всей документации в `conductor/` на предмет полноты и отсутствия противоречий.
