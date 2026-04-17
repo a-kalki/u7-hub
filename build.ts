@@ -1,23 +1,65 @@
-import { rm, mkdir, readdir, cp, stat } from 'node:fs/promises';
+import { rm, mkdir, readdir, cp, stat, readFile, writeFile } from 'node:fs/promises';
 import { join, dirname, basename, relative } from 'node:path';
+import MarkdownIt from 'markdown-it';
+import mdAttrs from 'markdown-it-attrs';
 
-// --- Конфигурация ---
-const SRC_DIR = 'src';
-const OUT_DIR = process.env.NODE_ENV === 'production' ? 'dist/prod' : 'dist/dev';
+// --- Определение режима сборки (Единый источник истины) ---
+const args = process.argv.slice(2);
+const envMode = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+const argMode = args.includes('--prod') ? 'prod' : args.includes('--dev') ? 'dev' : null;
 
-// --- Модули с явной конфигурацией ---
+const MODE = argMode || envMode || 'dev';
+const isProd = MODE === 'prod';
+const isDev = !isProd;
+
+const OUT_DIR = isProd ? 'dist/prod' : 'dist/dev';
+
+const md = new MarkdownIt({
+  html: true, // Позволяем HTML внутри MD (для таблиц)
+  linkify: true,
+  typographer: true
+}).use(mdAttrs);
+
+console.log(`🚀 Режим сборки: ${isProd ? 'PRODUCTION' : 'DEVELOPMENT'}`);
+console.log(`📂 Выходная директория: ${OUT_DIR}`);
+
+// --- Конфигурация модулей ---
 const MODULES = {
+  // ... (остальной конфиг без изменений)
   community: {
-    entry: 'src/community/ui/community.html',
+    pages: [
+      {
+        template: 'src/community/ui/community.template.html',
+        contentDir: 'src/community/ui/content',
+        outputName: 'community.html',
+      }
+    ],
     assets: ['src/community/ui/**/*.{css,ts,js}'],
-    dependencies: [] // Теперь зависимости на уровне корня
+    dependencies: []
   },
   course: {
-    entry: 'src/course/ui/course-landing.html',
-    assets: [
-      'src/course/ui/**/*.{css,ts,js,html}',
+    pages: [
+      {
+        template: 'src/course/ui/course-landing.template.html',
+        contentDir: 'src/course/ui/content',
+        contentFiles: ['landing.md'], // Только один файл для лендинга
+        outputName: 'course-landing.html',
+      },
+      {
+        template: 'src/course/ui/course-details.template.html',
+        contentDir: 'src/course/ui/content',
+        excludeContent: ['landing.md'], // Все кроме лендинга
+        outputName: 'course-details.html',
+      },
+      {
+        template: 'src/course/ui/form.html', // Просто копия
+        outputName: 'form.html'
+      }
     ],
-    dependencies: [] // Теперь зависимости на уровне корня
+    assets: [
+      'src/course/ui/**/*.{css,ts,js}',
+    ],
+    dependencies: []
   }
 };
 
@@ -28,19 +70,6 @@ const SHARED_DEPENDENCIES = [
   'src/app/ui/user-session-manager.ts',
   'src/app/ui/tab-manager.ts'
 ];
-
-// --- Получение аргументов командной строки ---
-const args = process.argv.slice(2);
-const isProd = args.includes('--prod');
-const isDev = args.includes('--dev');
-
-if (!isProd && !isDev) {
-  console.error('Ошибка: Укажите режим сборки (--dev или --prod).');
-  process.exit(1);
-}
-
-console.log(`Начинается сборка в режиме: ${isProd ? 'Production' : 'Development'}`);
-console.log(`Выходная директория: ${OUT_DIR}`);
 
 // --- Функции сборки ---
 
@@ -127,29 +156,42 @@ async function buildSharedDependencies() {
   return copiedFiles;
 }
 
-async function buildModule(moduleName: string, config: typeof MODULES[keyof typeof MODULES]) {
+async function buildModule(moduleName: string, config: any) {
   console.log(`\n--- Сборка модуля: ${moduleName} ---`);
   const moduleOutDir = join(OUT_DIR, moduleName);
   await mkdir(moduleOutDir, { recursive: true });
 
   const copiedFiles: string[] = [];
 
-  // 1. Копируем основные HTML файлы
-  if (config.entry) {
-    const htmlName = basename(config.entry);
-    await copyFile(config.entry, join(moduleOutDir, htmlName));
-    copiedFiles.push(htmlName);
-    
-    // Для курсов копируем дополнительные HTML файлы
-    if (moduleName === 'course') {
-      const additionalHtml = await findFiles('src/course/ui/*.html');
-      for (const htmlFile of additionalHtml) {
-        if (htmlFile !== config.entry) {
-          const name = basename(htmlFile);
-          await copyFile(htmlFile, join(moduleOutDir, name));
-          copiedFiles.push(name);
-        }
+  // 1. Обработка страниц
+  for (const page of config.pages) {
+    if (page.template && page.contentDir) {
+      console.log(`[${moduleName}] Рендеринг страницы: ${page.outputName}`);
+      let html = await readFile(page.template, 'utf-8');
+      
+      const mdFiles = await readdir(page.contentDir);
+      for (const mdFile of mdFiles) {
+        if (!mdFile.endsWith('.md')) continue;
+        if (page.contentFiles && !page.contentFiles.includes(mdFile)) continue;
+        if (page.excludeContent && page.excludeContent.includes(mdFile)) continue;
+        
+        const key = basename(mdFile, '.md');
+        const content = await readFile(join(page.contentDir, mdFile), 'utf-8');
+        const rendered = md.render(content);
+        
+        const placeholder = `<!-- CONTENT:${key} -->`;
+        html = html.replace(new RegExp(placeholder, 'g'), rendered);
       }
+      
+      const outPath = join(moduleOutDir, page.outputName);
+      await writeFile(outPath, html);
+      console.log(`✅ [${moduleName}] HTML собран из шаблона: ${page.outputName}`);
+      copiedFiles.push(page.outputName);
+    } else if (page.template) {
+      // Просто копия шаблона если нет контента
+      const htmlName = page.outputName || basename(page.template);
+      await copyFile(page.template, join(moduleOutDir, htmlName));
+      copiedFiles.push(htmlName);
     }
   }
 
@@ -157,8 +199,8 @@ async function buildModule(moduleName: string, config: typeof MODULES[keyof type
   for (const assetPattern of config.assets) {
     const assetFiles = await findFiles(assetPattern);
     for (const assetFile of assetFiles) {
-      // Пропускаем HTML файлы
-      if (assetFile.endsWith('.html')) continue;
+      // Пропускаем HTML и MD файлы и шаблоны
+      if (assetFile.endsWith('.html') || assetFile.endsWith('.md') || assetFile.includes('.template.')) continue;
       
       const relativePath = assetFile.replace(`src/${moduleName}/ui/`, '');
       const destPath = join(moduleOutDir, relativePath);
@@ -167,18 +209,16 @@ async function buildModule(moduleName: string, config: typeof MODULES[keyof type
     }
   }
 
-  // 3. Собираем TypeScript/JavaScript файлы (только специфичные для модуля)
+  // 3. Собираем TypeScript/JavaScript файлы
   const tsFiles = (await findFiles(`src/${moduleName}/ui/**/*.{ts,js}`))
     .filter(file => !file.endsWith('.test.ts') && !file.endsWith('.test.js'));
 
-  const allEntryPoints = [...tsFiles];
-
-  if (allEntryPoints.length > 0) {
+  if (tsFiles.length > 0) {
     console.log(`[${moduleName}] Сборка TypeScript/JavaScript...`);
     
     try {
       const result = await Bun.build({
-        entrypoints: allEntryPoints,
+        entrypoints: tsFiles,
         outdir: moduleOutDir,
         minify: isProd,
         sourcemap: isDev ? 'inline' : 'none',
@@ -189,21 +229,11 @@ async function buildModule(moduleName: string, config: typeof MODULES[keyof type
 
       if (result.success) {
         console.log(`✅ [${moduleName}] JavaScript/TypeScript успешно собраны.`);
-        
-        // Добавляем скомпилированные JS файлы в список
-        for (const entry of allEntryPoints) {
+        for (const entry of tsFiles) {
           const baseName = basename(entry, '.ts');
           copiedFiles.push(`${baseName}.js`);
         }
       } else {
-        console.error(`❌ [${moduleName}] Ошибка сборки JavaScript/TypeScript:`);
-        for (const [index, message] of result.logs.entries()) {
-          console.error(`\n--- Ошибка ${index + 1} ---`);
-          console.error(`Сообщение: ${message.message}`);
-          if (message.position) {
-            console.error(`Файл: ${message.position?.file}`);
-          }
-        }
         throw new Error(`Сборка TypeScript для модуля ${moduleName} завершилась с ошибками`);
       }
     } catch (error: any) {
@@ -211,8 +241,6 @@ async function buildModule(moduleName: string, config: typeof MODULES[keyof type
       console.error(error.message);
       throw error;
     }
-  } else {
-    console.log(`[${moduleName}] TypeScript/JavaScript файлы не найдены.`);
   }
 
   return {

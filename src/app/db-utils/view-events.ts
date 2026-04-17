@@ -1,23 +1,24 @@
 import { Database } from 'bun:sqlite';
-import { UserEventsRepository } from '@course/api/repositories/userEventsRepository';
+import { UserEventsRepository } from '../../course/api/repositories/userEventsRepository';
+import { join } from 'node:path';
 
 function showHelp() {
   console.log(`
-Использование: bun run db-utils/view-events.ts [опции]
+Использование: bun run src/app/db-utils/view-events.ts [опции]
 
 Опции:
-  --limit <число>    Количество последних событий для показа (по умолчанию: 10)
+  --limit <число>    Количество последних событий для показа (по умолчанию: 15)
   --user <userId>    Фильтровать события по ID пользователя
   --page <pageName>  Фильтровать события по названию страницы
   --format <формат>  Формат вывода: json, table, csv (по умолчанию: table)
   --json             Короткий алиас для --format=json
+  --watch            Обновлять данные каждые 2 секунды
+  --db <путь>        Путь к файлу БД (по умолчанию: автоматически по NODE_ENV)
   --help             Показать эту справку
 
 Примеры:
-  bun run db-utils/view-events.ts
-  bun run db-utils/view-events.ts --limit 20
-  bun run db-utils/view-events.ts --user "user123" --json
-  bun run db-utils/view-events.ts --page "index" --limit 5 --format csv
+  bun run src/app/db-utils/view-events.ts --limit 20
+  bun run src/app/db-utils/view-events.ts --watch
   `);
 }
 
@@ -29,33 +30,64 @@ async function main() {
     return;
   }
 
-  const limit = parseInt(args.find(arg => arg.startsWith('--limit='))?.split('=')[1] || '10');
-  const userId = args.find(arg => arg.startsWith('--user='))?.split('=')[1];
-  const pageName = args.find(arg => arg.startsWith('--page='))?.split('=')[1];
-  const format = args.includes('--json') ? 'json' : 
-                 args.find(arg => arg.startsWith('--format='))?.split('=')[1] || 'table';
+  // Парсинг аргументов
+  const getArgValue = (name: string) => {
+    const arg = args.find(a => a.startsWith(`--${name}=`));
+    if (arg) return arg.split('=')[1];
+    const index = args.indexOf(`--${name}`);
+    if (index !== -1 && args[index + 1]) return args[index + 1];
+    return null;
+  };
 
-  // Остальной код без изменений...
-  const db = new Database('course.sqlite');
-  const repo = new UserEventsRepository(db);
+  const limit = parseInt(getArgValue('limit') || '15');
+  const userId = getArgValue('user');
+  const pageName = getArgValue('page');
+  const format = args.includes('--json') ? 'json' : (getArgValue('format') || 'table');
+  const isWatch = args.includes('--watch');
+  
+  // Определяем путь к БД
+  const defaultDbPath = process.env.NODE_ENV === 'production' ? 'course.sqlite' : 'course.sqlite';
+  const dbPath = getArgValue('db') || defaultDbPath;
 
-  try {
-    let events;
-    
-    if (userId || pageName) {
-      events = repo.getFilteredEvents({ userId, pageName, limit });
-    } else {
-      events = repo.getLatest(limit);
+  console.log(`📅 ${new Date().toLocaleString()}`);
+  console.log(`🔌 Подключение к БД: ${dbPath}`);
+  console.log(`🔍 Фильтр: ${userId ? `User=${userId}` : 'Все'} ${pageName ? `Page=${pageName}` : ''}`);
+
+  const run = () => {
+    const db = new Database(dbPath);
+    const repo = new UserEventsRepository(db);
+
+    try {
+      let events;
+      if (userId || pageName) {
+        events = repo.getFilteredEvents({ userId, pageName, limit });
+      } else {
+        events = repo.getLatest(limit);
+      }
+
+      if (isWatch) {
+        console.clear();
+        console.log(`👀 Режим наблюдения (Ctrl+C для выхода)`);
+        console.log(`📅 Обновлено: ${new Date().toLocaleTimeString()}`);
+        console.log(`📊 Последние ${events.length} событий:`);
+      } else {
+        console.log(`📊 Найдено ${events.length} событий:`);
+      }
+
+      formatEvents(events, format);
+      
+    } catch (error) {
+      console.error('❌ Ошибка:', error);
+      if (!isWatch) process.exit(1);
+    } finally {
+      db.close();
     }
+  };
 
-    console.log(`📊 Найдено ${events.length} событий`);
-    formatEvents(events, format);
-    
-  } catch (error) {
-    console.error('❌ Ошибка при получении событий:', error);
-    process.exit(1);
-  } finally {
-    db.close();
+  run();
+
+  if (isWatch) {
+    setInterval(run, 2000);
   }
 }
 

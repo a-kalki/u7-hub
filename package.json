@@ -7,6 +7,7 @@
     "@happy-dom/global-registrator": "^18.0.1",
     "@playwright/test": "^1.55.1",
     "@types/bun": "latest",
+    "@types/markdown-it": "^14.1.2",
     "dotenv-cli": "^10.0.0",
     "playwright": "^1.55.1"
   },
@@ -16,6 +17,8 @@
   "dependencies": {
     "happy-dom": "^18.0.1",
     "libphonenumber-js": "^1.12.18",
+    "markdown-it": "^14.1.1",
+    "markdown-it-attrs": "^4.3.1",
     "marked": "^18.0.0",
     "openai": "^5.23.1"
   },
@@ -26,6 +29,8 @@
     "db:backup:named": "bun run src/app/db-utils/backup-db.ts --name=pre-migration",
     "db:migrate": "NODE_ENV=production bun run src/app/db-utils/run-migrations.ts --force",
     "db:status": "NODE_ENV=production bun run src/app/db-utils/run-migrations.ts --status",
+    "metrics": "bun run src/app/db-utils/view-events.ts",
+    "metrics:watch": "bun run src/app/db-utils/view-events.ts --watch",
     "dev:server": "NODE_ENV=development bun --hot run src/app/server.ts",
     "build:dev": "NODE_ENV=development bun run build.ts --dev",
     "start:dev": "bun run build:dev && bun run dev:server",

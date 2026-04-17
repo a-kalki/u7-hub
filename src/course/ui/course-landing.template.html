@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta name="page-name" content="course-landing">
+  <meta name="page-variant" content="v1_initial">
+  <meta charset="UTF-8">
+  <title>Обучение программированию с ментором</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/course/course-landing.css">
+  <meta name="description" content="Лендинг страница бесплатных курсов программирования в г. Уральск">
+  <meta name="keywords" content="курсы, программирование, Казахстан, Уральск, коворкинг, менторство, обучение">
+</head>
+
+<body>
+
+  <!-- CONTENT:landing -->
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Все права принадлежат Нурболату :-)</p>
+      <p class="contact">Тел: +7 777 287 8182</p>
+    </div>
+  </footer>
+
+  <!-- Секция 6: Модальное окно чата -->
+  <div id="chat-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>💬 Чат с ИИ-ассистентом</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="chat-container">
+          <div id="chat-messages">
+            <!-- Сообщения будут здесь -->
+            <div class="message assistant-message">
+              <p>Привет! Я ИИ-ассистент, помогаю Нурболату и готов ответить на вопросы о курсах программирования. Но по
+                персональным вопросам посоветую обратиться напрямую.</p>
+            </div>
+          </div>
+          <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Твой вопрос о курсах..." required>
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">Отправить</span>
+              <span class="btn-icon">↑</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Общие скрипты -->
+  <script type="module" src="/user-session-manager.js"></script>
+  <script type="module" src="/tracker.js"></script>
+
+  <!-- Специфичные для курсов скрипты -->
+  <script type="module" src="/course/chat-logic.js"></script>
+  <script type="module" src="/course/chat-manager.js"></script>
+  <script type="module">
+    import {ChatManager, openChatModal, closeChatModal} from './course/chat-manager.js';
+    import {initializeChat} from './course/chat-logic.js';
+
+    // Инициализируем глобально для использования в onclick
+    window.chatManager = new ChatManager();
+    window.openChatModal = openChatModal;
+    window.closeChatModal = closeChatModal;
+
+    // Инициализируем логику чата
+    document.addEventListener('DOMContentLoaded', initializeChat);
+  </script>
+</body>
+
+</html>
