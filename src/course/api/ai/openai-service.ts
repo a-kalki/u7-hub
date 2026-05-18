@@ -11,27 +11,25 @@ export class OpenAIService extends AIService {
     this.modelName = modelName;
   }
 
-    protected async *generateResponse(userMessage: string, history: ChatMessage[]): AsyncGenerator<string> {
+    protected async *generateResponse(userMessage: string, history: ChatMessage[], prompt: string): AsyncGenerator<string> {
         try {
-        const fullPrompt = this.buildPrompt(lastMessages);
-            
             const stream = await this.openai.chat.completions.create({
                 model: this.modelName,
                 messages: [
-                    { 
-                        role: 'system', 
-                        content: prompt 
+                    {
+                        role: 'system',
+                        content: prompt
                     },
-                    { 
-                        role: 'user', 
-                        content: userMessage 
+                    {
+                        role: 'user',
+                        content: userMessage
                     },
                 ],
                 stream: true,
-                temperature: 0.8, // Более творческие и вариативные ответы
-                max_tokens: 800,  // Более короткие ответы
-                presence_penalty: 0.2, // Поощряем новые темы
-                frequency_penalty: 0.3, // Снижаем повторения
+                temperature: 0.8,
+                max_tokens: 800,
+                presence_penalty: 0.2,
+                frequency_penalty: 0.3,
             });
 
             for await (const chunk of stream) {

@@ -1,11 +1,11 @@
 import UserSessionManager from '@app/ui/user-session-manager.js';
-import { marked } from 'marked';
+import MarkdownIt from 'markdown-it';
 
-// Настройка marked для безопасности (ограничиваем некоторые элементы, если нужно)
-// Для базового чата оставляем дефолтные настройки
-marked.setOptions({
-    breaks: true, // Включаем перенос строк с помощью одного \n
-    gfm: true     // GitHub Flavored Markdown
+const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true,
+    breaks: true
 });
 
 // Конфигурация эмодзи-анимаций
@@ -81,9 +81,7 @@ function removeEmojiIndicator(messageElement: HTMLDivElement): void {
 
 function formatMarkdown(text: string): string {
     if (!text) return '';
-    // Используем marked для парсинга, отключаем парсинг опасного HTML если нужно
-    // as string добавлен для TypeScript, так как parse может возвращать Promise при асинхронных плагинах
-    return marked.parse(text) as string;
+    return md.render(text);
 }
 
 function appendMessage(text: string, sender: 'user' | 'assistant', isLoading = false): HTMLDivElement {

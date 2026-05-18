@@ -12,12 +12,10 @@ export class GoogleAIService extends AIService {
         this.apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${this.modelName}:generateContent`;
     }
 
-    protected async *generateResponse(userMessage: string, history: ChatMessage[]): AsyncGenerator<string> {
+    protected async *generateResponse(userMessage: string, history: ChatMessage[], prompt: string): AsyncGenerator<string> {
         try {
-            const prompt = this.buildPrompt(userMessage, history);
-            
             console.log('Sending request to Google AI with model:', this.modelName);
-            
+
             const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
                 method: 'POST',
                 headers: {
@@ -28,7 +26,7 @@ export class GoogleAIService extends AIService {
                         {
                             parts: [
                                 {
-                                    text: prompt
+                                    text: this.buildFullPrompt(userMessage, history, prompt)
                                 }
                             ]
                         }
@@ -45,7 +43,7 @@ export class GoogleAIService extends AIService {
                             threshold: "BLOCK_MEDIUM_AND_ABOVE"
                         },
                         {
-                            category: "HARM_CATEGORY_HATE_SPEECH", 
+                            category: "HARM_CATEGORY_HATE_SPEECH",
                             threshold: "BLOCK_MEDIUM_AND_ABOVE"
                         }
                     ]
@@ -59,10 +57,9 @@ export class GoogleAIService extends AIService {
                     model: this.modelName,
                     error: errorText
                 });
-                
+
                 if (response.status === 404) {
-                    // Попробуем другую модель
-                    yield* this.fallbackModel(userMessage, history);
+                    yield* this.fallbackModel(userMessage, history, prompt);
                     return;
                 } else if (response.status === 429) {
                     yield "Слишком много запросов. Попробуйте через минуту.";
@@ -73,15 +70,14 @@ export class GoogleAIService extends AIService {
             }
 
             const data = await response.json();
-            
+
             if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
                 console.error('Invalid response format:', data);
                 throw new Error('Invalid response format from Google AI');
             }
 
             const responseText = data.candidates[0].content.parts[0].text;
-            
-            // Эмулируем стриминг
+
             yield* this.streamText(responseText);
 
         } catch (error: any) {
@@ -90,15 +86,12 @@ export class GoogleAIService extends AIService {
         }
     }
 
-    private async *fallbackModel(userMessage: string, history: ChatMessage[]): AsyncGenerator<string> {
+    private async *fallbackModel(userMessage: string, history: ChatMessage[], prompt: string): AsyncGenerator<string> {
         console.log('Trying fallback model: gemini-1.5-flash-001');
-        
-        // Пробуем конкретную версию модели
+
         const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent?key=${this.apiKey}`;
-        
+
         try {
-            const prompt = this.buildPrompt(userMessage, history);
-            
             const response = await fetch(fallbackUrl, {
                 method: 'POST',
                 headers: {
@@ -109,7 +102,7 @@ export class GoogleAIService extends AIService {
                         {
                             parts: [
                                 {
-                                    text: prompt
+                                    text: this.buildFullPrompt(userMessage, history, prompt)
                                 }
                             ]
                         }
@@ -134,36 +127,31 @@ export class GoogleAIService extends AIService {
     }
 
     private async *streamText(text: string): AsyncGenerator<string> {
-        // Эмулируем плавное появление текста без принудительных переносов
         const words = text.split(' ');
-        
+
         for (const word of words) {
             yield word + ' ';
-            // Случайная задержка для большей естественности (от 10 до 40 мс)
             const delay = Math.floor(Math.random() * 30) + 10;
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
 
-    protected buildPrompt(userMessage: string, history: ChatMessage[]): string {
-        let prompt = "Ты — ИИ-помощник Нурболата на сайте курсов программирования.\n\n";
-        prompt += "КОНТЕКСТ КУРСА:\n" + this.aiContext + "\n\n";
-        prompt += "СИСТЕМНЫЕ ИНСТРУКЦИИ:\n" + this.systemPrompt + "\n\n";
+    private buildFullPrompt(userMessage: string, history: ChatMessage[], basePrompt: string): string {
+        let fullPrompt = basePrompt + "\n\n";
 
-        // Добавляем историю диалога
         if (history.length > 1) {
-            prompt += "ИСТОРИЯ ДИАЛОГА:\n";
+            fullPrompt += "ИСТОРИЯ ДИАЛОГА:\n";
             const relevantHistory = history.slice(0, -1);
             relevantHistory.forEach(msg => {
                 const role = msg.role === 'user' ? 'СТУДЕНТ' : 'НАСТАВНИК';
-                prompt += `${role}: ${msg.content}\n`;
+                fullPrompt += `${role}: ${msg.content}\n`;
             });
-            prompt += "\n";
+            fullPrompt += "\n";
         }
 
-        prompt += `ТЕКУЩИЙ ВОПРОС СТУДЕНТА: ${userMessage}\n\n`;
-        prompt += "ОТВЕТ НАСТАВНИКА:";
-        
-        return prompt;
+        fullPrompt += `ТЕКУЩИЙ ВОПРОС СТУДЕНТА: ${userMessage}\n\n`;
+        fullPrompt += "ОТВЕТ НАСТАВНИКА:";
+
+        return fullPrompt;
     }
 }

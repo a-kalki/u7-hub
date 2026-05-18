@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta name="page-name" content="course-details">
   <meta name="page-variant" content="v1_initial">
@@ -10,78 +11,81 @@
   <link rel="stylesheet" href="/common.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <meta name="description" content="Страница с основной информацией бесплатных курсов программирования в г. Уральск">
   <meta name="keywords" content="курсы, программирование, Казахстан, Уральск, коворкинг, менторство, обучение">
 </head>
+
 <body>
 
-<header class="w3-container w3-center w3-padding-32 w3-black">
-  <h1>Добро пожаловать в мир IT</h1>
-  <p>Здесь становятся программистами!</p>
-</header>
+  <header class="w3-container w3-center w3-padding-32 w3-black">
+    <h1>Добро пожаловать в мир IT</h1>
+    <p>Здесь становятся программистами!</p>
+  </header>
 
-<div class="tabs scrollable-tabs">
-  <div class="tabs-inner-wrapper">
-    <button class="tablink w3-white" data-tabname="about-of-course">О курсах</button>
-    <button class="tablink" data-tabname="about-of-me">Обо мне</button>
-    <button class="tablink" data-tabname="reviews">Отзывы</button>
-    <button class="tablink" data-tabname="ts">TypeScript</button>
-    <button class="tablink" data-tabname="python">Python</button>
-    <button class="tablink" data-tabname="contacts">Контакты</button>
-    <button class="tablink" data-tabname="behind-the-scenes">Закулисье</button>
+  <div class="tabs scrollable-tabs">
+    <div class="tabs-inner-wrapper">
+      <button class="tablink w3-white" data-tabname="mission">Миссия</button>
+      <button class="tablink" data-tabname="about-of-course">О курсах</button>
+      <button class="tablink" data-tabname="about-of-me">Обо мне</button>
+      <button class="tablink" data-tabname="reviews">Отзывы</button>
+      <button class="tablink" data-tabname="program">Программа</button>
+      <button class="tablink" data-tabname="contacts">Контакты</button>
+    </div>
   </div>
-</div>
 
-<div id="about-of-course" class="tabcontent" style="display:block">
-  <!-- CONTENT:about-of-course -->
-</div>
-
-<div id="about-of-me" class="tabcontent" style="display:none">
-  <!-- CONTENT:about-of-me -->
-</div>
-
-<div id="reviews" class="tabcontent" style="display:none">
-  <!-- CONTENT:reviews -->
-</div>
-
-<div id="ts" class="tabcontent" style="display:none">
-  <!-- CONTENT:ts -->
-</div>
-
-<div id="python" class="tabcontent" style="display:none">
-  <!-- CONTENT:python -->
-</div>
-
-<div id="contacts" class="tabcontent" style="display:none">
-  <!-- CONTENT:contacts -->
-</div>
-
-<div id="behind-the-scenes" class="tabcontent" style="display:none">
-  <!-- CONTENT:behind-the-scenes -->
-</div>
-
-<div class="tabs scrollable-tabs">
-  <div class="tabs-inner-wrapper">
-    <button class="tablink w3-white" data-tabname="about-of-course">О курсах</button>
-    <button class="tablink" data-tabname="about-of-me">Обо мне</button>
-    <button class="tablink" data-tabname="reviews">Отзывы</button>
-    <button class="tablink" data-tabname="ts">TypeScript</button>
-    <button class="tablink" data-tabname="python">Python</button>
-    <button class="tablink" data-tabname="contacts">Контакты</button>
-    <button class="tablink" data-tabname="behind-the-scenes">Закулисье</button>
+  <div id="mission" class="tabcontent" style="display:block">
+    <!-- CONTENT:mission -->
   </div>
-</div>
 
-<footer class="w3-container w3-center w3-padding-32 w3-black">
-  <div class="footer-rights">© 2025 Все права принадлежат Нурболату :-).</div>
-  <a href="#top" class="w3-button w3-circle w3-white footer-button">↑</a>
-</footer>
+  <div id="about-of-course" class="tabcontent" style="display:none">
+    <!-- CONTENT:about-of-course -->
+  </div>
 
-<!-- Общие скрипты -->
-<script type="module" src="/user-session-manager.js"></script>
-<script type="module" src="/tab-manager.js"></script>
-<script type="module" src="/tracker.js"></script>
+  <div id="about-of-me" class="tabcontent" style="display:none">
+    <!-- CONTENT:about-of-me -->
+  </div>
+
+  <div id="reviews" class="tabcontent" style="display:none">
+    <div class="filter-buttons-container w3-container">
+      <div class="filter-buttons">
+        <button class="w3-button w3-black filter-btn" data-filter="all">Все</button>
+        <button class="w3-button w3-light-grey filter-btn" data-filter="student">Студенты</button>
+        <button class="w3-button w3-light-grey filter-btn" data-filter="team">Команда</button>
+      </div>
+    </div>
+    <!-- CONTENT:reviews -->
+  </div>
+
+  <div id="program" class="tabcontent" style="display:none">
+    <!-- CONTENT:program -->
+  </div>
+
+  <div id="contacts" class="tabcontent" style="display:none">
+    <!-- CONTENT:contacts -->
+  </div>
+
+  <div class="tabs scrollable-tabs">
+    <div class="tabs-inner-wrapper">
+      <button class="tablink w3-white" data-tabname="mission">Миссия</button>
+      <button class="tablink" data-tabname="about-of-course">О курсах</button>
+      <button class="tablink" data-tabname="about-of-me">Обо мне</button>
+      <button class="tablink" data-tabname="reviews">Отзывы</button>
+      <button class="tablink" data-tabname="program">Программа</button>
+      <button class="tablink" data-tabname="contacts">Контакты</button>
+    </div>
+  </div>
+
+  <footer class="w3-container w3-center w3-padding-32 w3-black">
+    <div class="footer-rights">© 2025 Все права принадлежат Нурболату :-).</div>
+    <a href="#top" class="w3-button w3-circle w3-white footer-button">↑</a>
+  </footer>
+
+  <!-- Общие скрипты -->
+  <script type="module" src="/user-session-manager.js"></script>
+  <script type="module" src="/tab-manager.js"></script>
+  <script type="module" src="/tracker.js"></script>
 
 </body>
+
 </html>

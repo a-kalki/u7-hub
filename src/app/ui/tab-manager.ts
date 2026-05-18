@@ -169,4 +169,43 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+
+  // Инициализация фильтров (например, для отзывов)
+  initFilters();
 });
+
+/**
+ * Универсальная фильтрация элементов внутри контейнера
+ */
+function initFilters() {
+  document.addEventListener('click', (event) => {
+    const btn = (event.target as HTMLElement).closest('.filter-btn');
+    if (!btn) return;
+
+    const filter = btn.getAttribute('data-filter');
+    if (!filter) return;
+
+    // Находим ближайший контейнер (обычно это вкладка tabcontent)
+    const container = btn.closest('.tabcontent') || document.body;
+    const items = container.querySelectorAll('[data-review-type]'); // Фильтруем по наличию атрибута типа
+    const buttons = container.querySelectorAll('.filter-btn');
+
+    // 1. Обновляем визуальное состояние кнопок (W3.CSS стили)
+    buttons.forEach(b => {
+      b.classList.remove('w3-black');
+      b.classList.add('w3-light-grey');
+    });
+    btn.classList.add('w3-black');
+    btn.classList.remove('w3-light-grey');
+
+    // 2. Скрываем/показываем элементы
+    items.forEach(item => {
+      const type = item.getAttribute('data-review-type');
+      if (filter === 'all' || type === filter) {
+        (item as HTMLElement).style.display = 'block';
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
+    });
+  });
+}

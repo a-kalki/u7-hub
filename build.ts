@@ -2,6 +2,7 @@ import { rm, mkdir, readdir, cp, stat, readFile, writeFile } from 'node:fs/promi
 import { join, dirname, basename, relative } from 'node:path';
 import MarkdownIt from 'markdown-it';
 import mdAttrs from 'markdown-it-attrs';
+import mdSpans from 'markdown-it-bracketed-spans';
 
 // --- Определение режима сборки (Единый источник истины) ---
 const args = process.argv.slice(2);
@@ -18,7 +19,9 @@ const md = new MarkdownIt({
   html: true, // Позволяем HTML внутри MD (для таблиц)
   linkify: true,
   typographer: true
-}).use(mdAttrs);
+})
+  .use(mdSpans)
+  .use(mdAttrs);
 
 console.log(`🚀 Режим сборки: ${isProd ? 'PRODUCTION' : 'DEVELOPMENT'}`);
 console.log(`📂 Выходная директория: ${OUT_DIR}`);
@@ -34,7 +37,7 @@ const MODULES = {
         outputName: 'community.html',
       }
     ],
-    assets: ['src/community/ui/**/*.{css,ts,js}'],
+    assets: ['src/course/ui/**/*.{css,ts,js,svg}'],
     dependencies: []
   },
   course: {
@@ -57,7 +60,7 @@ const MODULES = {
       }
     ],
     assets: [
-      'src/course/ui/**/*.{css,ts,js}',
+      'src/course/ui/**/*.{css,ts,js,svg}',
     ],
     dependencies: []
   }
@@ -102,7 +105,7 @@ async function buildSharedDependencies() {
   console.log('\n--- Сборка общих зависимостей ---');
   const copiedFiles: string[] = [];
 
-  // Собираем TypeScript общие зависимости
+  // Собираем не TypeScript зависимости
   const notTsDeps = SHARED_DEPENDENCIES.filter(dep => !dep.endsWith('.ts'));
   for (const fileName of notTsDeps) {
     const name = basename(fileName);
@@ -113,7 +116,7 @@ async function buildSharedDependencies() {
   const tsDeps = SHARED_DEPENDENCIES.filter(dep => dep.endsWith('.ts'));
   if (tsDeps.length > 0) {
     console.log('Сборка общих TypeScript файлов...');
-    
+
     // Компилируем TS в JS
     const result = await Bun.build({
       entrypoints: tsDeps,
@@ -132,7 +135,7 @@ async function buildSharedDependencies() {
         const baseName = basename(tsDep, '.ts');
         copiedFiles.push(`${baseName}.js`);
       }
-      
+
       // УДАЛЯЕМ исходные .ts файлы из выходной директории
       for (const tsDep of tsDeps) {
         const name = basename(tsDep);
@@ -156,6 +159,28 @@ async function buildSharedDependencies() {
   return copiedFiles;
 }
 
+// --- Вспомогательные функции для рендеринга ---
+
+/**
+ * Оборачивает части HTML в div.w3-container с чередованием фона.
+ * Разделителем служит любой тег с классом .sw-bg-color
+ */
+function wrapHtmlSections(html: string): string {
+  // Ищем теги с классом sw-bg-color (используем regex для поиска начала секций)
+  const sections = html.split(/(?=<[^>]*\bclass\s*=\s*["'][^"']*\bsw-bg-color\b[^"']*["'][^>]*>)/g);
+
+  if (sections.length <= 1) return html;
+
+  return sections
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+    .map((section, index) => {
+      const bgColorClass = index % 2 === 0 ? 'w3-white' : 'w3-light-grey';
+      return `<div class="${bgColorClass} w3-container">${section}</div>`;
+    })
+    .join('\n');
+}
+
 async function buildModule(moduleName: string, config: any) {
   console.log(`\n--- Сборка модуля: ${moduleName} ---`);
   const moduleOutDir = join(OUT_DIR, moduleName);
@@ -168,21 +193,26 @@ async function buildModule(moduleName: string, config: any) {
     if (page.template && page.contentDir) {
       console.log(`[${moduleName}] Рендеринг страницы: ${page.outputName}`);
       let html = await readFile(page.template, 'utf-8');
-      
+
       const mdFiles = await readdir(page.contentDir);
       for (const mdFile of mdFiles) {
         if (!mdFile.endsWith('.md')) continue;
         if (page.contentFiles && !page.contentFiles.includes(mdFile)) continue;
         if (page.excludeContent && page.excludeContent.includes(mdFile)) continue;
-        
+
         const key = basename(mdFile, '.md');
         const content = await readFile(join(page.contentDir, mdFile), 'utf-8');
-        const rendered = md.render(content);
-        
+        let rendered = md.render(content);
+
+        // Автоматическое оборачивание в секции (кроме лендинга и формы)
+        if (mdFile !== 'landing.md' && !page.template.includes('form.html')) {
+          rendered = wrapHtmlSections(rendered);
+        }
+
         const placeholder = `<!-- CONTENT:${key} -->`;
         html = html.replace(new RegExp(placeholder, 'g'), rendered);
       }
-      
+
       const outPath = join(moduleOutDir, page.outputName);
       await writeFile(outPath, html);
       console.log(`✅ [${moduleName}] HTML собран из шаблона: ${page.outputName}`);
@@ -201,7 +231,7 @@ async function buildModule(moduleName: string, config: any) {
     for (const assetFile of assetFiles) {
       // Пропускаем HTML и MD файлы и шаблоны
       if (assetFile.endsWith('.html') || assetFile.endsWith('.md') || assetFile.includes('.template.')) continue;
-      
+
       const relativePath = assetFile.replace(`src/${moduleName}/ui/`, '');
       const destPath = join(moduleOutDir, relativePath);
       await copyFile(assetFile, destPath);
@@ -215,7 +245,7 @@ async function buildModule(moduleName: string, config: any) {
 
   if (tsFiles.length > 0) {
     console.log(`[${moduleName}] Сборка TypeScript/JavaScript...`);
-    
+
     try {
       const result = await Bun.build({
         entrypoints: tsFiles,
@@ -255,23 +285,23 @@ async function printDirectoryStructure(dir: string, prefix = ''): Promise<string
   try {
     const items = await readdir(dir);
     const lines: string[] = [];
-    
+
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const itemPath = join(dir, item);
       const stats = await stat(itemPath);
       const isLast = i === items.length - 1;
-      
+
       const currentPrefix = prefix + (isLast ? '└── ' : '├── ');
       lines.push(currentPrefix + item);
-      
+
       if (stats.isDirectory()) {
         const newPrefix = prefix + (isLast ? '    ' : '│   ');
         const subLines = await printDirectoryStructure(itemPath, newPrefix);
         lines.push(...subLines);
       }
     }
-    
+
     return lines;
   } catch (error) {
     return [`${prefix}❌ Ошибка чтения директории: ${error}`];
@@ -300,7 +330,7 @@ async function runBuild() {
     }
 
     console.log('\n✅ Сборка завершена успешно!');
-    
+
     // Выводим динамическую структуру
     console.log('\n📁 Структура выходной директории:');
     try {

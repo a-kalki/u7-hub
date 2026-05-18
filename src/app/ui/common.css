@@ -4,7 +4,21 @@ body {
   margin: 0 auto;
 }
 
-body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, a, div, button, footer {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+a,
+div,
+button,
+footer {
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -83,18 +97,13 @@ footer {
   background: #555;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 500;
-}
-
-.review {
-  margin-bottom: 2em;
-  padding-bottom: 1em;
-  border-bottom: 1px solid #eee;
-}
-
-.review:last-child {
-  border-bottom: none;
 }
 
 .review-header {
@@ -151,7 +160,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   position: relative;
   cursor: default;
-  
+
   /* Скрываем нативный скроллбар по умолчанию */
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -200,22 +209,22 @@ h1, h2, h3, h4, h5, h6 {
     -ms-overflow-style: auto;
     padding-bottom: 4px;
   }
-  
+
   .scrollable-tabs.show-scrollbar::-webkit-scrollbar {
     display: block;
     height: 4px;
   }
-  
+
   .scrollable-tabs.show-scrollbar::-webkit-scrollbar-track {
     background: transparent;
     margin: 0 5px;
   }
-  
+
   .scrollable-tabs.show-scrollbar::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.4);
     border-radius: 2px;
   }
-  
+
   .scrollable-tabs.show-scrollbar::-webkit-scrollbar-thumb:active {
     background: rgba(255, 255, 255, 0.7);
   }
@@ -227,11 +236,11 @@ h1, h2, h3, h4, h5, h6 {
     scrollbar-color: transparent transparent;
     scrollbar-width: none;
   }
-  
+
   .scrollable-tabs.show-scrollbar:hover {
     scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
   }
-  
+
   @media (hover: none) and (pointer: coarse) {
     .scrollable-tabs.show-scrollbar {
       scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
@@ -298,16 +307,28 @@ h1, h2, h3, h4, h5, h6 {
 /* Дополнительные стили */
 blockquote {
   border-left: 3px solid #666;
-  margin: 1.5em 10px;
+  margin: 1em 10px;
   padding: 0.5em 10px;
   font-style: italic;
   color: #555;
 }
 
+blockquote p {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
-  h1 { font-size: 1.8em; }
-  h2 { font-size: 1.4em; }
-  h3 { font-size: 1.2em; }
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
 }
 
 /* Убираем возможные отступы между inline-block элементами */
@@ -335,6 +356,7 @@ blockquote {
     opacity: 0;
     transform: translateY(2px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -350,7 +372,7 @@ blockquote {
   .scrollable-tabs {
     scroll-behavior: auto;
   }
-  
+
   .tablink {
     transition: none;
   }
@@ -369,4 +391,45 @@ blockquote {
     margin: 0 -12px;
     padding: 0 12px;
   }
+}
+
+/* Стили для SVG и диаграмм */
+.svg-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 2em;
+  -webkit-overflow-scrolling: touch;
+}
+
+.svg-container img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Для альбомных схем на мобилках даем минимальную ширину, чтобы не сжимались в кашу */
+@media (max-width: 600px) {
+  .svg-landscape {
+    min-width: 600px;
+  }
+}
+
+/* Кастомные стили для контента */
+.important {
+  font-weight: 500;
+  background: #ddd;
+  border-radius: 4px;
+  padding: 0.05em 0.3em;
+}
+
+b,
+strong {
+  font-weight: 600;
+}
+
+.term {
+  background: #ddd;
+  border-radius: 4px;
+  padding: 0.05em 0.3em;
 }

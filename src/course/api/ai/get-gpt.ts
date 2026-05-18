@@ -18,19 +18,20 @@ export function getGeminiAiService(): GoogleAIService {
   const GOOGLE_AI_KEY = process.env.AI_GEMINI_API_KEY as string;
 
   if (!GOOGLE_AI_KEY) {
-      console.error('GOOGLE_AI_KEY must be set');
-      process.exit(1);
+    console.error('GOOGLE_AI_KEY must be set');
+    process.exit(1);
   }
 
   return new GoogleAIService(GOOGLE_AI_KEY);
 }
 
 export function getDeepSeekAiService(): DeepSeekService {
-  const DEEPSEEK_AI_KEY = process.env.AI_DEEPSEEK_API_KEY as string;
+  const DEEPSEEK_AI_KEY = process.env.DEEPSEEK_API_KEY as string;
+  console.log('deepseek:', DEEPSEEK_AI_KEY)
 
   if (!DEEPSEEK_AI_KEY) {
-      console.error('DEEPSEEK_AI_KEY must be set');
-      process.exit(1);
+    console.error('DEEPSEEK_AI_KEY must be set');
+    process.exit(1);
   }
 
   return new DeepSeekService(DEEPSEEK_AI_KEY);

@@ -11,7 +11,7 @@ body {
 .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px;
 }
 
 p {
@@ -26,11 +26,6 @@ hr {
 
 .highlight {
   color: #00ff99;
-}
-
-.section {
-  padding: 60px 20px;
-  border-top: 1px solid #333;
 }
 
 .benefits-grid {
@@ -53,14 +48,10 @@ hr {
   color: #00ff99;
 }
 
-.free-trial {
+.alt-bg {
   background-color: rgba(0, 255, 153, 0.1);
   border-top: 1px solid #00ff99;
   border-bottom: 1px solid #00ff99;
-}
-
-.cta-section {
-  padding: 80px 20px;
 }
 
 .cta-buttons {
@@ -71,13 +62,19 @@ hr {
   margin: 30px 0;
 }
 
+.cta-buttons a {
+  width: 200px;
+}
+
 .btn {
   display: inline-flex;
+  font-size: 1em;
   align-items: center;
   justify-content: center;
   padding: 12px 24px;
   border-radius: 8px;
   text-decoration: none;
+  line-height: 1em;
   font-weight: 500;
   transition: all 0.3s ease;
   gap: 8px;
@@ -175,12 +172,6 @@ footer p {
   line-height: 1.5;
   margin-bottom: 25px;
   flex-grow: 1;
-}
-
-.choice-card .btn {
-  width: 100%;
-  max-width: 200px;
-  margin-top: auto;
 }
 
 .btn-outline {
@@ -392,6 +383,22 @@ footer p {
   color: #fff;
 }
 
+/* Ссылки в сообщениях чата */
+.message-content a {
+  color: #66ccff;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.message-content a:hover {
+  opacity: 0.8;
+}
+
+.user-message .message-content a {
+  color: #004d99;
+  font-weight: 600;
+}
+
 .user-message .message-content strong {
   color: #121212;
 }
@@ -500,10 +507,7 @@ footer p {
 
   .cta-buttons {
     flex-direction: column;
-  }
-
-  .section {
-    padding: 40px 15px;
+    align-items: center;
   }
 
   .choice-cards {

@@ -1,18 +1,17 @@
 <!-- Секция 1: Герой -->
-<div class="container" data-track-view-time="landing-intro">
+<div class="container alt-bg" data-track-view-time="landing-intro">
 
 # Начни путь в IT <span class="highlight">бесплатно</span>,<br>вместе с ментором.
 
 Программирование — это больше, чем код. Это мышление, команда и ответственность.
 
-Я помогу тебе не просто изучить синтаксис, а понять логику IT-среды, найти единомышленников и уверенно сделать первые шаги в профессии.  
+Я помогу тебе не просто изучить синтаксис, а понять логику IT-среды, найти единомышленников и уверенно сделать первые шаги в профессии.
 Моя задача — дать тебе путевку.
 
 </div>
 
 <!-- Секция 2: Миссия -->
-<div class="section" data-track-view-time="landing-mission">
-<div class="container">
+<div class="container" data-track-view-time="landing-mission">
 
 ## Почему я этим занимаюсь?
 
@@ -38,23 +37,9 @@
 </div>
 </div>
 </div>
-</div>
 
-<!-- Секция 3: Подход -->
-<div class="section free-trial" data-track-view-time="landing-approach">
-<div class="container">
-
-## Обучение бесплатное. В чем моя выгода?
-
-Я не продаю курсы, а выращиваю сильных специалистов.
-
-Моя цель — дать вам такие навыки, чтобы после обучения **у нас появилась возможность** работать вместе над общими проектами. Я вкладываюсь в ваше развитие, надеясь на будущее партнерство, но вы абсолютно свободны в выборе своего пути.
-</div>
-</div>
-
-<!-- Секция 4: Объединенный блок информации и ИИ-ассистента -->
-<div class="section" id="ai-chat-section" data-track-view-time="landing-info-chat">
-<div class="container">
+<!-- Секция 3: Объединенный блок информации и ИИ-ассистента -->
+<div class="container alt-bg" id="ai-chat-section" data-track-view-time="landing-info-chat">
 
 ## Хочешь больше подробностей?
 
@@ -67,48 +52,39 @@
 <div class="choice-icon">📚</div>
 
 ### Изучить сайт самому
-Вся важная информация по курсам собрана тут.
+Вся важная информация по курсам собрана в этом сайте.
 
-[Изучить сайт](/course/details){.btn .btn-secondary data-analytics-action="to_details_from_landing"}
+<a href="/course/details" class="btn btn-secondary" data-analytics-action="to_details_from_landing">Изучить сайт</a>
 </div>
 
 <div class="choice-card">
 <div class="choice-icon">🤖</div>
 
 ### Спросить ИИ-ассистента
-Мой ИИ ассистент прочитал весь сайт и готов ответить на любые твои вопросы.
+Мой ИИ ассистент прочитал весь сайт за тебя и готов ответить на твои вопросы от моего имени.
 
 <button class="btn btn-secondary" onclick="openChatModal()">Задать вопрос</button>
 </div>
 </div>
 </div>
 
-<section id="ai-chat-section" style="display: none;">
-
-## Чат с ИИ-ассистентом курсов программирования
-Задайте вопросы о курсах программирования, программе обучения, отзывах студентов
-</section>
-</div>
-
-<hr>
-
 <!-- Секция 5: Призыв к действию -->
-<div class="cta-section" data-track-view-time="landing-cta">
-<div class="container">
+<div class="container" data-track-view-time="landing-cta">
 
 ## Готов получить новый жизненный опыт?
 
-Заполняй анкету и приходи на первые занятия — мы познакомимся, я отвечу на твои вопросы, а ты попробуешь свои силы в коде. После этого ты сам решишь, насколько этот путь тебе подходит и хочешь ли двигаться дальше.
+Переходи к боту. Он может дать тебе ссылку на нашу телеграм группу школы или заполнить анкету для поступления в ближайший поток.
+
+Приходи на курсы. Мы познакомимся, я отвечу на твои вопросы, а ты попробуешь свои силы в коде. Ты сам решишь, насколько этот путь тебе подходит и хочешь ли двигаться дальше.
 
 <div class="cta-buttons">
-<a href="course/form" class="btn btn-primary" data-analytics-action="to_form_from_landing">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" /></svg>
-Заполнить анкету
-</a>
-<a href="https://t.me/anzUralsk" class="btn btn-secondary" data-analytics-action="contact_from_landing">
+<a href="https://t.me/u7_school_bot" class="btn btn-primary" data-analytics-action="to_bot_from_landing" target="_blank">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 13.15c-.19.91-.68 1.13-1.38.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" /></svg>
-Задать вопрос
+Перейти к боту
 </a>
-</div>
+<a href="https://t.me/anzUralsk" class="btn btn-secondary" data-analytics-action="contact_from_landing" target="_blank">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>
+Задать вопрос лично
+</a>
 </div>
 </div>
