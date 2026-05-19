@@ -13,6 +13,8 @@ module.exports = {
     env_production: {
       NODE_ENV: process.env.NODE_ENV ||  "production",
       PORT: process.env.PORT || "3101",
+      DB_PATH: process.env.DB_PATH || "./course.sqlite",
+      DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY || "",
     }
   }]
 };

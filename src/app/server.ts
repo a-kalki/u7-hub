@@ -150,6 +150,7 @@ try {
   // --- Запуск сервера ---
   console.log('SERVER: Starting Bun.serve...');
   const server = Bun.serve({
+    hostname: IS_PROD ? "127.0.0.1" : "0.0.0.0",
     port: PORT,
     async fetch(request: Request): Promise<Response> {
       const url = new URL(request.url);
