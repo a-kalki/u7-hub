@@ -23,24 +23,20 @@
     "markdown-it-container": "^4.0.0"
   },
   "scripts": {
-    "db:backup": "NODE_ENV=production bun run src/app/db-utils/backup-db.ts",
-    "db:backup:list": "bun run src/app/db-utils/backup-db.ts --list",
-    "db:backup:cleanup": "bun run src/app/db-utils/backup-db.ts --cleanup",
-    "db:backup:named": "bun run src/app/db-utils/backup-db.ts --name=pre-migration",
-    "db:migrate": "NODE_ENV=production bun run src/app/db-utils/run-migrations.ts --force",
-    "db:status": "NODE_ENV=production bun run src/app/db-utils/run-migrations.ts --status",
-    "metrics": "bun run src/app/db-utils/view-events.ts",
-    "metrics:watch": "bun run src/app/db-utils/view-events.ts --watch",
-    "dev:server": "NODE_ENV=development bun --hot run src/app/server.ts",
+    "db:backup": "NODE_ENV=production bun run packages/core/src/db-utils/backup-db.ts",
+    "db:backup:list": "bun run packages/core/src/db-utils/backup-db.ts --list",
+    "db:backup:cleanup": "bun run packages/core/src/db-utils/backup-db.ts --cleanup",
+    "db:backup:named": "bun run packages/core/src/db-utils/backup-db.ts --name=pre-migration",
+    "db:migrate": "NODE_ENV=production bun run packages/core/src/db-utils/run-migrations.ts --force",
+    "db:status": "NODE_ENV=production bun run packages/core/src/db-utils/run-migrations.ts --status",
+    "metrics": "bun run packages/core/src/db-utils/view-events.ts",
+    "metrics:watch": "bun run packages/core/src/db-utils/view-events.ts --watch",
+    "dev:server": "NODE_ENV=development bun --hot run packages/core/src/server.ts",
     "build:dev": "NODE_ENV=development bun run build.ts --dev --watch",
     "start:dev": "bun run build:dev & bun run dev:server",
     "build:prod": "NODE_ENV=production bun run build.ts --prod",
     "start:prod": "bun run db:backup && bun run db:migrate && bun run build:prod && pm2 start ecosystem.config.cjs --env production",
     "test": "bun test",
-    "test:ui": "bun test src/ui/**/*.test.ts",
-    "test:api": "bun test src/api/**/*.test.ts",
-    "test:domain": "bun test src/domain/**/*.test.ts",
-    "test:watch": "bun test --watch",
-    "test:e2e": "bun test test/e2e/form-submission.test.ts test/e2e/analytics.test.ts test/e2e/browser-form.test.ts test/e2e/chat.test.ts"
+    "test:watch": "bun test --watch"
   }
 }

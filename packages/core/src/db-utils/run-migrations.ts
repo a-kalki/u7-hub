@@ -2,7 +2,7 @@ import { cwd } from 'process';
 import { join } from 'path';
 import { Db } from '@app/db';
 
-const migrationsDir = 'src/app/migrations';
+const migrationsDir = 'packages/core/src/migrations';
 
 function showHelp() {
   console.log(`
@@ -16,10 +16,10 @@ function showHelp() {
   --help             Показать эту справку
 
 Примеры:
-  bun run src/app/db-utils/run-migrations.ts --status      # Показать статус
-  bun run src/app/db-utils/run-migrations.ts --force       # Запустить все миграции
-  bun run src/app/db-utils/run-migrations.ts --force --migration=002_remove_promocode.ts  # Конкретная миграция
-  bun run src/app/db-utils/run-migrations.ts --rollback    # Откатить последнюю миграцию
+  bun run packages/core/src/db-utils/run-migrations.ts --status      # Показать статус
+  bun run packages/core/src/db-utils/run-migrations.ts --force       # Запустить все миграции
+  bun run packages/core/src/db-utils/run-migrations.ts --force --migration=002_remove_promocode.ts  # Конкретная миграция
+  bun run packages/core/src/db-utils/run-migrations.ts --rollback    # Откатить последнюю миграцию
   `);
 }
 
@@ -41,9 +41,9 @@ async function main() {
   // Всегда показываем предупреждение для миграций без --force
   if (!forceRun && !status && !rollback) {
     console.error('❌ ОШИБКА: Запуск миграций требует флага --force');
-    console.error('   Используйте: bun run src/app/db-utils/run-migrations.ts --force');
-    console.error('   Или для проверки статуса: bun src/app/run db-utils/run-migrations.ts --status');
-    console.error('   Для справки: bun run src/app/db-utils/run-migrations.ts --help');
+    console.error('   Используйте: bun run packages/core/src/db-utils/run-migrations.ts --force');
+    console.error('   Или для проверки статуса: bun run packages/core/src/db-utils/run-migrations.ts --status');
+    console.error('   Для справки: bun run packages/core/src/db-utils/run-migrations.ts --help');
     process.exit(1);
   }
 

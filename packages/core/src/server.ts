@@ -14,7 +14,7 @@ try {
   const appDb = new Db(DB_PATH);
   try {
     appDb.connect();
-    await appDb.runMigrations('./src/app/migrations');
+    await appDb.runMigrations('./packages/core/src/migrations');
   } catch (error: any) {
     console.error(`Ошибка БД: ${error.message}`);
     process.exit(1);

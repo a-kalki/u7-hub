@@ -17,7 +17,7 @@ export interface UserChatSession {
 const CONTENT_FILES = {
   // Курсы
   course: {
-    basePath: 'src/course/ui/content',
+    basePath: 'packages/nur-course/src/ui/content',
     files: {
       landing: 'landing.md',
       aboutCourse: 'about-of-course.md',
@@ -30,7 +30,7 @@ const CONTENT_FILES = {
   },
   // Сообщество
   community: {
-    basePath: 'src/community/ui/content',
+    basePath: 'packages/community/src/ui/content',
     files: {
       mission: 'mission.md',
       program: 'program.md',
@@ -181,7 +181,7 @@ export abstract class AIService {
   }
 
   private async initialize() {
-    const systemPromptPath = resolve(process.cwd(), 'src/course/api/ai', 'ai-system-prompt.txt');
+    const systemPromptPath = resolve(process.cwd(), 'packages/nur-course/src/api/ai', 'ai-system-prompt.txt');
 
     try {
       const systemPromptContent = await fs.readFile(systemPromptPath, 'utf-8');

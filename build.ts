@@ -32,35 +32,35 @@ const MODULES = {
   community: {
     pages: [
       {
-        template: 'src/community/ui/community.template.html',
-        contentDir: 'src/community/ui/content',
+        template: 'packages/community/src/ui/community.template.html',
+        contentDir: 'packages/community/src/ui/content',
         outputName: 'community.html',
       }
     ],
-    assets: ['src/course/ui/**/*.{css,ts,js,svg}'],
+    assets: ['packages/nur-course/src/ui/**/*.{css,ts,js,svg}'],
     dependencies: []
   },
   course: {
     pages: [
       {
-        template: 'src/course/ui/course-landing.template.html',
-        contentDir: 'src/course/ui/content',
+        template: 'packages/nur-course/src/ui/course-landing.template.html',
+        contentDir: 'packages/nur-course/src/ui/content',
         contentFiles: ['landing.md'], // Только один файл для лендинга
         outputName: 'course-landing.html',
       },
       {
-        template: 'src/course/ui/course-details.template.html',
-        contentDir: 'src/course/ui/content',
+        template: 'packages/nur-course/src/ui/course-details.template.html',
+        contentDir: 'packages/nur-course/src/ui/content',
         excludeContent: ['landing.md'], // Все кроме лендинга
         outputName: 'course-details.html',
       },
       {
-        template: 'src/course/ui/form.html', // Просто копия
+        template: 'packages/nur-course/src/ui/form.html', // Просто копия
         outputName: 'form.html'
       }
     ],
     assets: [
-      'src/course/ui/**/*.{css,ts,js,svg}',
+      'packages/nur-course/src/ui/**/*.{css,ts,js,svg}',
     ],
     dependencies: []
   }
@@ -68,10 +68,10 @@ const MODULES = {
 
 // Общие зависимости (будут в корне dist)
 const SHARED_DEPENDENCIES = [
-  'src/app/ui/common.css',
-  'src/app/ui/tracker.ts',
-  'src/app/ui/user-session-manager.ts',
-  'src/app/ui/tab-manager.ts'
+  'packages/core/src/ui/common.css',
+  'packages/core/src/ui/tracker.ts',
+  'packages/core/src/ui/user-session-manager.ts',
+  'packages/core/src/ui/tab-manager.ts'
 ];
 
 // --- Функции сборки ---

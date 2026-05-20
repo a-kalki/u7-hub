@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 function showHelp() {
   console.log(`
-Использование: bun run src/app/db-utils/view-events.ts [опции]
+Использование: bun run packages/core/src/db-utils/view-events.ts [опции]
 
 Опции:
   --limit <число>    Количество последних событий для показа (по умолчанию: 15)
@@ -17,8 +17,8 @@ function showHelp() {
   --help             Показать эту справку
 
 Примеры:
-  bun run src/app/db-utils/view-events.ts --limit 20
-  bun run src/app/db-utils/view-events.ts --watch
+  bun run packages/core/src/db-utils/view-events.ts --limit 20
+  bun run packages/core/src/db-utils/view-events.ts --watch
   `);
 }
 
