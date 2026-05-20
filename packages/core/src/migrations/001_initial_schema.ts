@@ -1,4 +1,4 @@
-import { Db } from "../src/api/db";
+import { Db } from '@app/db';
 
 export async function up(db: Db): Promise<void> {
   console.log("Running migration: 001_initial_schema.ts - UP");
