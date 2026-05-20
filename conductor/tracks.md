@@ -22,3 +22,8 @@ This file tracks all major development tracks for the GIS Expert project.
 ## [FEAT-001] Content Expansion
 - **Goal**: Add more pages and interactive elements.
 - **Status**: ⏳ PLANNED
+
+---
+
+- [ ] **Track: Переход на монорепозиторий (monorepo_20260520)**
+*Link: [./tracks/monorepo_20260520/](./tracks/monorepo_20260520/)*
