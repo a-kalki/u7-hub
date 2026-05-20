@@ -1,7 +1,6 @@
 import { type Database } from 'bun:sqlite';
 // TODO: Исправить пути импорта после рефакторинга сервисов
 import { saveAnalyticsData } from './services/analytics';
-import { saveFormData } from './services/formSubmission';
 import { getDeepSeekAiService } from './ai/get-gpt';
 
 // Инициализация AI сервиса должна быть вынесена на уровень приложения (в app/server.ts)
@@ -24,20 +23,6 @@ export async function handleCourseRoutes(request: Request, db: Database): Promis
             return new Response('Данные аналитики получены и сохранены', { status: 200, headers: HEADERS });
         } catch (error: any) {
             console.error('COURSE API: Error processing analytics data:', error);
-            const isProd = process.env.NODE_ENV === 'production';
-            const errorMessage = isProd ? 'Внутренняя ошибка сервера.' : `Ошибка: ${error.message}`;
-            const status = isProd ? 500 : 400;
-            return new Response(errorMessage, { status, headers: HEADERS });
-        }
-    }
-
-    if (request.method === 'POST' && url.pathname === '/api/submit-form') {
-        try {
-            const formData = await request.json();
-            await saveFormData(db, formData);
-            return new Response('Данные формы получены и сохранены', { status: 200, headers: HEADERS });
-        } catch (error: any) {
-            console.error('COURSE API: Ошибка при обработке данных формы:', error);
             const isProd = process.env.NODE_ENV === 'production';
             const errorMessage = isProd ? 'Внутренняя ошибка сервера.' : `Ошибка: ${error.message}`;
             const status = isProd ? 500 : 400;

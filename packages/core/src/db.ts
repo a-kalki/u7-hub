@@ -66,7 +66,7 @@ export class Db {
    */
   private setupMigrationsTable(): void {
     const db = this.connect();
-    
+
     // Создаем таблицу миграций если её нет
     db.exec(`
       CREATE TABLE IF NOT EXISTS _migrations (
@@ -75,24 +75,15 @@ export class Db {
         executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    
-    // Проверяем, есть ли уже данные в основных таблицах
-    // Если есть - значит 001 миграция уже применена
-    const hasFormSubmissions = db.prepare(`
-      SELECT name FROM sqlite_master 
-      WHERE type='table' AND name='form_submissions'
-    `).get();
-    
+
     const hasMigrations = db.prepare('SELECT COUNT(*) as count FROM _migrations').get() as { count: number };
-    
-    // Если таблица form_submissions существует, но в _migrations нет записей
-    // значит это существующая БД где 001 уже применена
-    if (hasFormSubmissions && hasMigrations.count === 0) {
+
+    // Если в _migrations нет записей - это существующая БД, помечаем 001 как применённую
+    if (hasMigrations.count === 0) {
       console.log('[DB] Detected existing database. Marking 001_initial_schema.ts as applied.');
       try {
         db.prepare('INSERT INTO _migrations (name) VALUES (?)').run('001_initial_schema.ts');
       } catch (error) {
-        // Игнорируем ошибку если запись уже существует (UNIQUE constraint)
         console.log('[DB] 001_initial_schema.ts already marked as applied');
       }
     }
@@ -158,10 +149,10 @@ export class Db {
 
       const migrationPath = join(process.cwd(), migrationsDir, file);
       const migration = await import(migrationPath);
-      
+
       if (migration.up && typeof migration.up === 'function') {
         console.log(`[DB] Running migration UP: ${file}`);
-        
+
         // Запускаем в транзакции для безопасности
         const db = this.connect();
         const transaction = db.transaction(() => {
@@ -181,7 +172,7 @@ export class Db {
         console.warn(`[DB] Migration file ${file} does not export an 'up' function.`);
       }
     }
-    
+
     console.log(`[DB] Applied ${appliedCount} new migrations`);
   }
 
@@ -199,10 +190,10 @@ export class Db {
 
     const migrationPath = join(process.cwd(), 'migrations', migrationName);
     const migration = await import(migrationPath);
-    
+
     if (migration.up && typeof migration.up === 'function') {
       console.log(`[DB] Running specific migration: ${migrationName}`);
-      
+
       const db = this.connect();
       const transaction = db.transaction(() => {
         migration.up(this);
@@ -245,7 +236,7 @@ export class Db {
 
     if (migration.down && typeof migration.down === 'function') {
       console.log(`[DB] Rolling back migration: ${lastMigration.name}`);
-      
+
       const transaction = db.transaction(() => {
         migration.down(this);
         db.prepare('DELETE FROM _migrations WHERE name = ?').run(lastMigration.name);

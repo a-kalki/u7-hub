@@ -53,10 +53,6 @@ const MODULES = {
         contentDir: 'packages/nur-course/src/ui/content',
         excludeContent: ['landing.md'], // Все кроме лендинга
         outputName: 'course-details.html',
-      },
-      {
-        template: 'packages/nur-course/src/ui/form.html', // Просто копия
-        outputName: 'form.html'
       }
     ],
     assets: [
@@ -205,7 +201,7 @@ async function buildModule(moduleName: string, config: any) {
         let rendered = md.render(content);
 
         // Автоматическое оборачивание в секции (кроме лендинга и формы)
-        if (mdFile !== 'landing.md' && !page.template.includes('form.html')) {
+        if (mdFile !== 'landing.md') {
           rendered = wrapHtmlSections(rendered);
         }
 

@@ -6,7 +6,6 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "dependencies": {
-    "libphonenumber-js": "^1.12.18",
     "openai": "^5.23.1"
   },
   "devDependencies": {}

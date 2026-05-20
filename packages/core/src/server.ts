@@ -87,8 +87,7 @@ try {
       } else if (moduleDir === 'course') {
         // Специфичные маршруты для курсов
         const routeMap: { [key: string]: string } = {
-          '/details': 'course-details.html',
-          '/form': 'form.html'
+          '/details': 'course-details.html'
         };
         filePath = join(staticDir, moduleDir, routeMap[relativePath] || relativePath.substring(1));
       } else {
