@@ -4,7 +4,19 @@
   "type": "module",
   "private": true,
   "main": "src/index.ts",
-  "module": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./db": "./src/db.ts",
+    "./repositories/*": "./src/repositories/*.ts",
+    "./ui/*": "./src/ui/*.ts"
+  },
+  "imports": {
+    "#db": "./src/db.ts",
+    "#db/*": "./src/db-utils/*.ts",
+    "#repositories/*": "./src/repositories/*.ts",
+    "#ui/*": "./src/ui/*.ts",
+    "#migrations/*": "./src/migrations/*.ts"
+  },
   "dependencies": {},
   "devDependencies": {}
 }

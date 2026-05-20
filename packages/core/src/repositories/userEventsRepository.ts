@@ -1,6 +1,6 @@
 import { Database } from 'bun:sqlite';
 
-interface AnalyticsData {
+export interface AnalyticsData {
   userId: string;
   pageName: string;
   pageVariant: string;
@@ -9,7 +9,7 @@ interface AnalyticsData {
   finalAction: string;
   navigationPath: any;
   sectionViewTimes: any;
-  deviceInfo: any; // Новое поле
+  deviceInfo: any;
 }
 
 export class UserEventsRepository {
@@ -55,7 +55,7 @@ export class UserEventsRepository {
       "@finalAction": data.finalAction,
       "@navigationPath": JSON.stringify(data.navigationPath || []),
       "@sectionViewTimes": JSON.stringify(data.sectionViewTimes || {}),
-      "@deviceInfo": JSON.stringify(data.deviceInfo || {}) // Новое поле
+      "@deviceInfo": JSON.stringify(data.deviceInfo || {})
     });
   }
 

@@ -3,7 +3,7 @@ module.exports = {
   apps : [{
     name: "u7-hub",
     script: "/home/admin/.bun/bin/bun",
-    args: "packages/core/src/server.ts",
+    args: "apps/web-ui/src/index.ts",
     cwd: projectRoot,
     instances: 1,
     exec_mode: "fork",

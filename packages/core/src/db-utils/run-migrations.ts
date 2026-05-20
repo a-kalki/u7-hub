@@ -1,6 +1,6 @@
 import { cwd } from 'process';
 import { join } from 'path';
-import { Db } from '@app/db';
+import { Db } from '#db';
 
 const migrationsDir = 'packages/core/src/migrations';
 

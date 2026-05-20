@@ -1,5 +1,5 @@
 // Модуль для сбора и отправки аналитики поведения пользователей
-import UserSessionManager from '@app/ui/user-session-manager.js';
+import UserSessionManager from '#ui/user-session-manager';
 
 console.log("Трекер аналитики загружен.");
 

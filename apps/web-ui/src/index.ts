@@ -1,6 +1,6 @@
-import { Db } from '@app/db';
-import { handleCourseRoutes } from '@course/api/routes';
-import { join } from 'path';
+import { Db } from '@u7-hub/core';
+import { handleCourseRoutes } from '@u7-hub/nur-course';
+import { join } from 'node:path';
 
 try {
   // --- Конфигурация ---
@@ -14,7 +14,7 @@ try {
   const appDb = new Db(DB_PATH);
   try {
     appDb.connect();
-    await appDb.runMigrations('./packages/core/src/migrations');
+    await appDb.runMigrations('packages/core/src/migrations');
   } catch (error: any) {
     console.error(`Ошибка БД: ${error.message}`);
     process.exit(1);
@@ -41,7 +41,7 @@ try {
   // --- Определение путей к статическим файлам ---
   const getStaticDir = () => {
     const baseDir = IS_PROD ? 'dist/prod' : 'dist/dev';
-    return join(process.cwd(), baseDir);
+    return join(import.meta.dir, '..', baseDir);
   };
 
   // --- Функция для обслуживания статических файлов ---
@@ -69,11 +69,11 @@ try {
 
     // Try-files логика: перебираем кандидаты в порядке приоритета
     const candidates = [
-      cleanPath,                                                          // /nur-courses/course-landing.css
-      cleanPath === '/' ? '/index.html' : null,                           // / → /index.html
-      cleanPath === '/' ? '/community/index.html' : null,                  // / → fallback на community
-      !cleanPath.includes('.') ? `${cleanPath}/index.html` : null,         // /nur-courses → /nur-courses/index.html
-      !cleanPath.includes('.') ? `${cleanPath}.html` : null,               // /nur-courses → /nur-courses.html
+      cleanPath,
+      cleanPath === '/' ? '/index.html' : null,
+      cleanPath === '/' ? '/community/index.html' : null,
+      !cleanPath.includes('.') ? `${cleanPath}/index.html` : null,
+      !cleanPath.includes('.') ? `${cleanPath}.html` : null,
     ].filter(Boolean) as string[];
 
     for (const candidate of candidates) {
@@ -125,10 +125,6 @@ try {
       response = await handleCourseRoutes(request, appDb.connect());
       if (response) return response;
 
-      // Роуты сообщества (когда появятся)
-      // response = await handleCommunityRoutes(request, appDb.connect());
-      // if (response) return response;
-
       // --- Раздача статических файлов ---
       response = await serveStaticFile(pathname);
       if (response) return response;
@@ -147,10 +143,8 @@ try {
   console.log(`- Детали курса: http://localhost:${PORT}/nur-courses/details`);
 
   if (IS_PROD) {
-    console.log(`\nProduction домены:`);
-    console.log(`- Сообщество: https://community.gis-expert.kz`);
-    console.log(`- Курсы: https://nur-courses.gis-expert.kz`);
-    console.log(`- Детали курса: https://nur-courses.gis-expert.kz/details`);
+    console.log(`\nProduction:`);
+    console.log(`- Статика: ${getStaticDir()}`);
   }
 
 } catch (error: any) {

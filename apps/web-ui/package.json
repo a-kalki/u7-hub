@@ -1,21 +1,17 @@
 {
-  "name": "@u7-hub/nur-course",
+  "name": "@u7-hub/web-ui",
   "version": "1.0.0",
   "type": "module",
   "private": true,
   "main": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./ui/*": "./src/ui/*.ts"
-  },
-  "imports": {
-    "#api/*": "./src/api/*.ts",
-    "#ui/*": "./src/ui/*.ts"
-  },
   "dependencies": {
     "@u7-hub/core": "workspace:*",
+    "@u7-hub/nur-course": "workspace:*",
+    "@u7-hub/community": "workspace:*",
     "markdown-it": "^14.1.1",
-    "openai": "^5.23.1"
+    "markdown-it-attrs": "^4.3.1",
+    "markdown-it-bracketed-spans": "^1.0.1",
+    "markdown-it-container": "^4.0.0"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2"

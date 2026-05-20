@@ -1,4 +1,4 @@
-import UserSessionManager from '@app/ui/user-session-manager.js';
+import UserSessionManager from '@u7-hub/core/ui/user-session-manager';
 import MarkdownIt from 'markdown-it';
 
 const md = new MarkdownIt({

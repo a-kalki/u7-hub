@@ -1,4 +1,4 @@
-import { Db } from '@app/db';
+import { Db } from '#db';
 
 const db = new Db('course.sqlite');
 

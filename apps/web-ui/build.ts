@@ -4,6 +4,42 @@ import MarkdownIt from 'markdown-it';
 import mdAttrs from 'markdown-it-attrs';
 import mdSpans from 'markdown-it-bracketed-spans';
 
+// --- Корень проекта (относительно apps/web-ui) ---
+const PROJECT_ROOT = join(import.meta.dir, '..', '..');
+const PKG_CORE = join(PROJECT_ROOT, 'packages/core');
+const PKG_COURSE = join(PROJECT_ROOT, 'packages/nur-course');
+const PKG_COMMUNITY = join(PROJECT_ROOT, 'packages/community');
+
+// --- Вспомогательная функция для сборки TS через bun build CLI ---
+async function bunBuildCli(options: {
+  entrypoints: string[],
+  outdir: string,
+  minify: boolean,
+  sourcemap?: string,
+  target?: string,
+  format?: string,
+  splitting?: boolean,
+}): Promise<{ success: boolean, logs: string[] }> {
+  const args = ['build', ...options.entrypoints];
+  args.push('--outdir', options.outdir);
+  if (options.minify) args.push('--minify');
+  if (options.sourcemap && options.sourcemap !== 'none') {
+    args.push('--sourcemap');
+    if (options.sourcemap === 'inline') args.push('--inline');
+  }
+  if (options.target) args.push('--target', options.target);
+  if (options.format) args.push('--format', options.format);
+  if (options.splitting) args.push('--splitting');
+  args.push('--tsconfig-override', join(PROJECT_ROOT, 'tsconfig.json'));
+
+  const proc = Bun.spawnSync(['bun', ...args], { cwd: PROJECT_ROOT });
+  const logs: string[] = [];
+  if (proc.stdout?.length) logs.push(proc.stdout.toString());
+  if (proc.stderr?.length) logs.push(proc.stderr.toString());
+
+  return { success: proc.exitCode === 0, logs };
+}
+
 // --- Определение режима сборки ---
 const args = process.argv.slice(2);
 const envMode = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
@@ -11,9 +47,8 @@ const argMode = args.includes('--prod') ? 'prod' : args.includes('--dev') ? 'dev
 
 const MODE = argMode || envMode || 'dev';
 const isProd = MODE === 'prod';
-const isDev = !isProd;
 
-const OUT_DIR = isProd ? 'dist/prod' : 'dist/dev';
+const OUT_DIR = join(import.meta.dir, 'dist', isProd ? 'prod' : 'dev');
 
 const md = new MarkdownIt({
   html: true,
@@ -27,37 +62,35 @@ console.log(`🚀 Режим сборки: ${isProd ? 'PRODUCTION' : 'DEVELOPMEN
 console.log(`📂 Выходная директория: ${OUT_DIR}`);
 
 // --- Конфигурация модулей ---
-// outputPath — полный путь от корня dist, например: 'community/index.html'
-// assets — глоб паттерны для файлов, которые копируются в папку модуля
 const MODULES = {
   community: {
     pages: [
       {
-        template: 'packages/community/src/ui/community.template.html',
-        contentDir: 'packages/community/src/ui/content',
+        template: join(PKG_COMMUNITY, 'src/ui/community.template.html'),
+        contentDir: join(PKG_COMMUNITY, 'src/ui/content'),
         outputPath: 'community/index.html',
       }
     ],
-    assets: [],  // Нет уникальных ассетов — все общие (common.css, tracker.js и т.д.)
+    assets: [],
     dependencies: []
   },
   'nur-courses': {
     pages: [
       {
-        template: 'packages/nur-course/src/ui/course-landing.template.html',
-        contentDir: 'packages/nur-course/src/ui/content',
+        template: join(PKG_COURSE, 'src/ui/course-landing.template.html'),
+        contentDir: join(PKG_COURSE, 'src/ui/content'),
         contentFiles: ['landing.md'],
         outputPath: 'nur-courses/index.html',
       },
       {
-        template: 'packages/nur-course/src/ui/course-details.template.html',
-        contentDir: 'packages/nur-course/src/ui/content',
+        template: join(PKG_COURSE, 'src/ui/course-details.template.html'),
+        contentDir: join(PKG_COURSE, 'src/ui/content'),
         excludeContent: ['landing.md'],
         outputPath: 'nur-courses/details/index.html',
       }
     ],
     assets: [
-      'packages/nur-course/src/ui/**/*.{css,ts,js,svg}',
+      join(PKG_COURSE, 'src/ui/**/*.{css,ts,js,svg}'),
     ],
     dependencies: []
   }
@@ -65,10 +98,10 @@ const MODULES = {
 
 // Общие зависимости (будут в корне dist)
 const SHARED_DEPENDENCIES = [
-  'packages/core/src/ui/common.css',
-  'packages/core/src/ui/tracker.ts',
-  'packages/core/src/ui/user-session-manager.ts',
-  'packages/core/src/ui/tab-manager.ts'
+  join(PKG_CORE, 'src/ui/common.css'),
+  join(PKG_CORE, 'src/ui/tracker.ts'),
+  join(PKG_CORE, 'src/ui/user-session-manager.ts'),
+  join(PKG_CORE, 'src/ui/tab-manager.ts')
 ];
 
 // --- Функции сборки ---
@@ -90,7 +123,6 @@ async function findFiles(pattern: string): Promise<string[]> {
   const glob = new Bun.Glob(pattern);
   const files = [];
   for await (const file of glob.scan(".")) {
-    // Пропускаем тестовые файлы
     if (!file.endsWith('.test.ts') && !file.includes('.test.')) {
       files.push(file);
     }
@@ -115,11 +147,11 @@ async function buildSharedDependencies() {
   if (tsDeps.length > 0) {
     console.log('Сборка общих TypeScript файлов...');
 
-    const result = await Bun.build({
+    const result = await bunBuildCli({
       entrypoints: tsDeps,
       outdir: OUT_DIR,
       minify: isProd,
-      sourcemap: isDev ? 'inline' : 'none',
+      sourcemap: 'none',
       target: 'browser',
       format: 'esm',
       splitting: false,
@@ -132,22 +164,15 @@ async function buildSharedDependencies() {
         copiedFiles.push(`${baseName}.js`);
       }
 
-      // УДАЛЯЕМ исходные .ts файлы из выходной директории
+      // Удаляем исходные .ts файлы из выходной директории
       for (const tsDep of tsDeps) {
         const name = basename(tsDep);
         const tsPath = join(OUT_DIR, name);
-        try {
-          await rm(tsPath);
-          console.log(`🗑️  Удален исходный TS файл: ${name}`);
-        } catch (error) {
-          // Игнорируем ошибки удаления
-        }
+        try { await rm(tsPath); } catch { /* ignore */ }
       }
     } else {
       console.error('❌ Ошибка сборки общих зависимостей:');
-      for (const message of result.logs) {
-        console.error(message);
-      }
+      for (const log of result.logs) console.error(log);
       throw new Error('Сборка общих зависимостей завершилась с ошибками');
     }
   }
@@ -155,10 +180,6 @@ async function buildSharedDependencies() {
   return copiedFiles;
 }
 
-/**
- * Оборачивает части HTML в div с чередованием фона.
- * Разделителем служит любой тег с классом .sw-bg-color
- */
 function wrapHtmlSections(html: string): string {
   const sections = html.split(/(?=<[^>]*\bclass\s*=\s*["'][^"']*\bsw-bg-color\b[^"']*["'][^>]*>)/g);
   if (sections.length <= 1) return html;
@@ -193,7 +214,6 @@ async function buildModule(moduleName: string, config: any) {
         const content = await readFile(join(page.contentDir, mdFile), 'utf-8');
         let rendered = md.render(content);
 
-        // Автоматическое оборачивание в секции (кроме лендинга)
         if (mdFile !== 'landing.md') {
           rendered = wrapHtmlSections(rendered);
         }
@@ -204,19 +224,14 @@ async function buildModule(moduleName: string, config: any) {
 
       const outPath = join(OUT_DIR, page.outputPath);
       await mkdir(dirname(outPath), { recursive: true });
-
-      // Замена плейсхолдера текущим годом
       html = html.replace(/\{\{CURRENT_YEAR\}\}/g, String(new Date().getFullYear()));
 
       await writeFile(outPath, html);
-      console.log(`✅ [${moduleName}] HTML собран из шаблона: ${page.outputPath}`);
+      console.log(`✅ [${moduleName}] HTML собран: ${page.outputPath}`);
       copiedFiles.push(page.outputPath);
     } else if (page.template) {
-      // Просто копия шаблона если нет контента
       const outPath = join(OUT_DIR, page.outputPath);
       await mkdir(dirname(outPath), { recursive: true });
-
-      // Для шаблонов без контента — читаем, заменяем плейсхолдер и пишем
       let tmplHtml = await readFile(page.template, 'utf-8');
       tmplHtml = tmplHtml.replace(/\{\{CURRENT_YEAR\}\}/g, String(new Date().getFullYear()));
       await writeFile(outPath, tmplHtml);
@@ -226,99 +241,90 @@ async function buildModule(moduleName: string, config: any) {
 
   // 2. Копируем ассеты модуля
   for (const assetPattern of config.assets) {
-    const assetFiles = await findFiles(assetPattern);
-    for (const assetFile of assetFiles) {
-      // Пропускаем HTML и MD файлы и шаблоны
-      if (assetFile.endsWith('.html') || assetFile.endsWith('.md') || assetFile.includes('.template.')) continue;
+    // Сканируем от корня проекта
+    const repoRelative = relative(PROJECT_ROOT, assetPattern);
+    const assetFiles = await findFiles(repoRelative);
+    const absAssetFiles = assetFiles.map(f => join(PROJECT_ROOT, f));
 
-      // Вычисляем относительный путь от корня assetPattern
-      // assetPattern: 'packages/nur-course/src/ui/**/*.{css,ts,js,svg}'
-      // basePath:     'packages/nur-course/src/ui/'
-      // assetFile:    'packages/nur-course/src/ui/course-landing.css'
-      // relative:     'course-landing.css'
+    for (const absFile of absAssetFiles) {
+      if (absFile.endsWith('.html') || absFile.endsWith('.md') || absFile.includes('.template.')) continue;
+
       const starIndex = assetPattern.indexOf('*');
       const basePath = starIndex >= 0 ? assetPattern.substring(0, starIndex) : assetPattern;
-      const moduleRelativePath = relative(basePath, assetFile);
+      const moduleRelativePath = relative(basePath, absFile);
 
       const destPath = join(OUT_DIR, moduleName, moduleRelativePath);
       await mkdir(dirname(destPath), { recursive: true });
-      await copyFile(assetFile, destPath);
+      await copyFile(absFile, destPath);
       copiedFiles.push(join(moduleName, moduleRelativePath));
     }
   }
 
-  // 3. Собираем TypeScript/JavaScript файлы из ассетов модуля
-  //    (которые уже скопированы как ассеты, теперь компилируем TS → JS)
-  const tsFiles = [];
+  // 3. Собираем TypeScript файлы из ассетов
+  const tsFiles: string[] = [];
   for (const assetPattern of config.assets) {
-    const files = await findFiles(assetPattern);
+    const repoRelative = relative(PROJECT_ROOT, assetPattern);
+    const files = await findFiles(repoRelative);
     for (const file of files) {
-      if ((file.endsWith('.ts') || file.endsWith('.js')) && !file.endsWith('.test.ts') && !file.endsWith('.test.js')) {
-        tsFiles.push(file);
+      const absFile = join(PROJECT_ROOT, file);
+      if ((absFile.endsWith('.ts') || absFile.endsWith('.js')) && !absFile.endsWith('.test.ts') && !absFile.endsWith('.test.js')) {
+        tsFiles.push(absFile);
       }
     }
   }
 
-  // Убираем дубликаты
   const uniqueTsFiles = [...new Set(tsFiles)];
 
   if (uniqueTsFiles.length > 0) {
-    console.log(`[${moduleName}] Сборка TypeScript/JavaScript...`);
+    console.log(`[${moduleName}] Сборка TypeScript...`);
 
     try {
-      const result = await Bun.build({
+      const result = await bunBuildCli({
         entrypoints: uniqueTsFiles,
         outdir: join(OUT_DIR, moduleName),
         minify: isProd,
-        sourcemap: isDev ? 'inline' : 'none',
+        sourcemap: 'none',
         target: 'browser',
         format: 'esm',
         splitting: false,
       });
 
       if (result.success) {
-        console.log(`✅ [${moduleName}] JavaScript/TypeScript успешно собраны.`);
+        console.log(`✅ [${moduleName}] TypeScript успешно собран.`);
 
-        // Удаляем исходные .ts файлы из выходной директории (оставляем .js)
         for (const entry of uniqueTsFiles) {
           if (!entry.endsWith('.ts')) continue;
 
-          // Находим assetPattern, который подходит для этого entry
-          const matchingPattern = config.assets.find((pattern: string) => {
-            const starIdx = pattern.indexOf('*');
-            const base = starIdx >= 0 ? pattern.substring(0, starIdx) : pattern;
-            return entry.startsWith(base);
-          });
-          if (!matchingPattern) continue;
-
-          const starIdx = matchingPattern.indexOf('*');
-          const basePath = starIdx >= 0 ? matchingPattern.substring(0, starIdx) : matchingPattern;
-          const moduleRelativePath = relative(basePath, entry);
-          const tsPath = join(OUT_DIR, moduleName, moduleRelativePath);
-          try {
-            await rm(tsPath);
-            console.log(`🗑️  Удален исходный TS файл: ${moduleRelativePath}`);
-          } catch (error) {
-            // Игнорируем если файла уже нет
+          let found = false;
+          for (const assetPattern of config.assets) {
+            const starIdx = assetPattern.indexOf('*');
+            const base = starIdx >= 0 ? assetPattern.substring(0, starIdx) : assetPattern;
+            if (entry.startsWith(base)) {
+              const moduleRelativePath = relative(base, entry);
+              const tsPath = join(OUT_DIR, moduleName, moduleRelativePath);
+              try { await rm(tsPath); } catch { /* ignore */ }
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            console.log(`⚠️  Не найден assetPattern для ${entry}`);
           }
         }
       } else {
+        console.error(`❌ [${moduleName}] Ошибка сборки TypeScript:`);
+        for (const log of result.logs) console.error(log);
         throw new Error(`Сборка TypeScript для модуля ${moduleName} завершилась с ошибками`);
       }
     } catch (error: any) {
-      console.error(`💥 [${moduleName}] Критическая ошибка при сборке TypeScript:`);
-      console.error(error.message);
+      console.error(`💥 [${moduleName}] Критическая ошибка:`, error.message);
       throw error;
     }
   }
 
-  return {
-    moduleName,
-    files: copiedFiles
-  };
+  return { moduleName, files: copiedFiles };
 }
 
-// --- Функция для отображения структуры директории ---
 async function printDirectoryStructure(dir: string, prefix = ''): Promise<string[]> {
   try {
     const items = await readdir(dir);
@@ -346,17 +352,14 @@ async function printDirectoryStructure(dir: string, prefix = ''): Promise<string
   }
 }
 
-// --- Запуск процесса сборки ---
 async function runBuild() {
   try {
     await cleanAndCreateDir();
 
     const buildResults = [];
 
-    // 1. Сначала собираем общие зависимости
     const sharedFiles = await buildSharedDependencies();
 
-    // 2. Затем собираем каждый модуль
     for (const [moduleName, config] of Object.entries(MODULES)) {
       try {
         const result = await buildModule(moduleName, config);
@@ -369,16 +372,14 @@ async function runBuild() {
 
     console.log('\n✅ Сборка завершена успешно!');
 
-    // Выводим динамическую структуру
     console.log('\n📁 Структура выходной директории:');
     try {
       const structureLines = await printDirectoryStructure(OUT_DIR);
       structureLines.forEach(line => console.log(line));
     } catch (error) {
-      console.log('❌ Не удалось отобразить структуру директории:', error);
+      console.log('❌ Не удалось отобразить структуру:', error);
     }
 
-    // Выводим краткую статистику
     console.log('\n📊 Статистика сборки:');
     console.log(`   Общие файлы: ${sharedFiles.length} файлов`);
     for (const result of buildResults) {

@@ -1,7 +1,7 @@
 import { type Database } from 'bun:sqlite';
 // TODO: Исправить пути импорта после рефакторинга сервисов
-import { saveAnalyticsData } from './services/analytics';
-import { getDeepSeekAiService } from './ai/get-gpt';
+import { saveAnalyticsData } from '#api/services/analytics';
+import { getDeepSeekAiService } from '#api/ai/get-gpt';
 
 // Инициализация AI сервиса должна быть вынесена на уровень приложения (в app/server.ts)
 // и передаваться в обработчики роутов. Пока оставим так для простоты.

@@ -4,7 +4,12 @@
   "type": "module",
   "private": true,
   "main": "src/index.ts",
-  "module": "src/index.ts",
-  "dependencies": {},
+  "exports": {
+    ".": "./src/index.ts",
+    "./ui/*": "./src/ui/*"
+  },
+  "dependencies": {
+    "@u7-hub/core": "workspace:*"
+  },
   "devDependencies": {}
 }
