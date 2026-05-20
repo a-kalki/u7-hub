@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it';
 import mdAttrs from 'markdown-it-attrs';
 import mdSpans from 'markdown-it-bracketed-spans';
 
-// --- Определение режима сборки (Единый источник истины) ---
+// --- Определение режима сборки ---
 const args = process.argv.slice(2);
 const envMode = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
 const argMode = args.includes('--prod') ? 'prod' : args.includes('--dev') ? 'dev' : null;
@@ -16,7 +16,7 @@ const isDev = !isProd;
 const OUT_DIR = isProd ? 'dist/prod' : 'dist/dev';
 
 const md = new MarkdownIt({
-  html: true, // Позволяем HTML внутри MD (для таблиц)
+  html: true,
   linkify: true,
   typographer: true
 })
@@ -27,32 +27,33 @@ console.log(`🚀 Режим сборки: ${isProd ? 'PRODUCTION' : 'DEVELOPMEN
 console.log(`📂 Выходная директория: ${OUT_DIR}`);
 
 // --- Конфигурация модулей ---
+// outputPath — полный путь от корня dist, например: 'community/index.html'
+// assets — глоб паттерны для файлов, которые копируются в папку модуля
 const MODULES = {
-  // ... (остальной конфиг без изменений)
   community: {
     pages: [
       {
         template: 'packages/community/src/ui/community.template.html',
         contentDir: 'packages/community/src/ui/content',
-        outputName: 'community.html',
+        outputPath: 'community/index.html',
       }
     ],
-    assets: ['packages/nur-course/src/ui/**/*.{css,ts,js,svg}'],
+    assets: [],  // Нет уникальных ассетов — все общие (common.css, tracker.js и т.д.)
     dependencies: []
   },
-  course: {
+  'nur-courses': {
     pages: [
       {
         template: 'packages/nur-course/src/ui/course-landing.template.html',
         contentDir: 'packages/nur-course/src/ui/content',
-        contentFiles: ['landing.md'], // Только один файл для лендинга
-        outputName: 'course-landing.html',
+        contentFiles: ['landing.md'],
+        outputPath: 'nur-courses/index.html',
       },
       {
         template: 'packages/nur-course/src/ui/course-details.template.html',
         contentDir: 'packages/nur-course/src/ui/content',
-        excludeContent: ['landing.md'], // Все кроме лендинга
-        outputName: 'course-details.html',
+        excludeContent: ['landing.md'],
+        outputPath: 'nur-courses/details/index.html',
       }
     ],
     assets: [
@@ -106,6 +107,7 @@ async function buildSharedDependencies() {
   for (const fileName of notTsDeps) {
     const name = basename(fileName);
     await copyFile(fileName, join(OUT_DIR, name));
+    copiedFiles.push(name);
   }
 
   // Собираем TypeScript общие зависимости
@@ -113,7 +115,6 @@ async function buildSharedDependencies() {
   if (tsDeps.length > 0) {
     console.log('Сборка общих TypeScript файлов...');
 
-    // Компилируем TS в JS
     const result = await Bun.build({
       entrypoints: tsDeps,
       outdir: OUT_DIR,
@@ -126,7 +127,6 @@ async function buildSharedDependencies() {
 
     if (result.success) {
       console.log('✅ Общие зависимости успешно собраны');
-      // Добавляем скомпилированные JS файлы в список
       for (const tsDep of tsDeps) {
         const baseName = basename(tsDep, '.ts');
         copiedFiles.push(`${baseName}.js`);
@@ -155,16 +155,12 @@ async function buildSharedDependencies() {
   return copiedFiles;
 }
 
-// --- Вспомогательные функции для рендеринга ---
-
 /**
- * Оборачивает части HTML в div.w3-container с чередованием фона.
+ * Оборачивает части HTML в div с чередованием фона.
  * Разделителем служит любой тег с классом .sw-bg-color
  */
 function wrapHtmlSections(html: string): string {
-  // Ищем теги с классом sw-bg-color (используем regex для поиска начала секций)
   const sections = html.split(/(?=<[^>]*\bclass\s*=\s*["'][^"']*\bsw-bg-color\b[^"']*["'][^>]*>)/g);
-
   if (sections.length <= 1) return html;
 
   return sections
@@ -179,15 +175,12 @@ function wrapHtmlSections(html: string): string {
 
 async function buildModule(moduleName: string, config: any) {
   console.log(`\n--- Сборка модуля: ${moduleName} ---`);
-  const moduleOutDir = join(OUT_DIR, moduleName);
-  await mkdir(moduleOutDir, { recursive: true });
-
   const copiedFiles: string[] = [];
 
   // 1. Обработка страниц
   for (const page of config.pages) {
     if (page.template && page.contentDir) {
-      console.log(`[${moduleName}] Рендеринг страницы: ${page.outputName}`);
+      console.log(`[${moduleName}] Рендеринг страницы: ${page.outputPath}`);
       let html = await readFile(page.template, 'utf-8');
 
       const mdFiles = await readdir(page.contentDir);
@@ -200,7 +193,7 @@ async function buildModule(moduleName: string, config: any) {
         const content = await readFile(join(page.contentDir, mdFile), 'utf-8');
         let rendered = md.render(content);
 
-        // Автоматическое оборачивание в секции (кроме лендинга и формы)
+        // Автоматическое оборачивание в секции (кроме лендинга)
         if (mdFile !== 'landing.md') {
           rendered = wrapHtmlSections(rendered);
         }
@@ -209,15 +202,17 @@ async function buildModule(moduleName: string, config: any) {
         html = html.replace(new RegExp(placeholder, 'g'), rendered);
       }
 
-      const outPath = join(moduleOutDir, page.outputName);
+      const outPath = join(OUT_DIR, page.outputPath);
+      await mkdir(dirname(outPath), { recursive: true });
       await writeFile(outPath, html);
-      console.log(`✅ [${moduleName}] HTML собран из шаблона: ${page.outputName}`);
-      copiedFiles.push(page.outputName);
+      console.log(`✅ [${moduleName}] HTML собран из шаблона: ${page.outputPath}`);
+      copiedFiles.push(page.outputPath);
     } else if (page.template) {
       // Просто копия шаблона если нет контента
-      const htmlName = page.outputName || basename(page.template);
-      await copyFile(page.template, join(moduleOutDir, htmlName));
-      copiedFiles.push(htmlName);
+      const outPath = join(OUT_DIR, page.outputPath);
+      await mkdir(dirname(outPath), { recursive: true });
+      await copyFile(page.template, outPath);
+      copiedFiles.push(page.outputPath);
     }
   }
 
@@ -228,24 +223,44 @@ async function buildModule(moduleName: string, config: any) {
       // Пропускаем HTML и MD файлы и шаблоны
       if (assetFile.endsWith('.html') || assetFile.endsWith('.md') || assetFile.includes('.template.')) continue;
 
-      const relativePath = assetFile.replace(`src/${moduleName}/ui/`, '');
-      const destPath = join(moduleOutDir, relativePath);
+      // Вычисляем относительный путь от корня assetPattern
+      // assetPattern: 'packages/nur-course/src/ui/**/*.{css,ts,js,svg}'
+      // basePath:     'packages/nur-course/src/ui/'
+      // assetFile:    'packages/nur-course/src/ui/course-landing.css'
+      // relative:     'course-landing.css'
+      const starIndex = assetPattern.indexOf('*');
+      const basePath = starIndex >= 0 ? assetPattern.substring(0, starIndex) : assetPattern;
+      const moduleRelativePath = relative(basePath, assetFile);
+
+      const destPath = join(OUT_DIR, moduleName, moduleRelativePath);
+      await mkdir(dirname(destPath), { recursive: true });
       await copyFile(assetFile, destPath);
-      copiedFiles.push(relativePath);
+      copiedFiles.push(join(moduleName, moduleRelativePath));
     }
   }
 
-  // 3. Собираем TypeScript/JavaScript файлы
-  const tsFiles = (await findFiles(`src/${moduleName}/ui/**/*.{ts,js}`))
-    .filter(file => !file.endsWith('.test.ts') && !file.endsWith('.test.js'));
+  // 3. Собираем TypeScript/JavaScript файлы из ассетов модуля
+  //    (которые уже скопированы как ассеты, теперь компилируем TS → JS)
+  const tsFiles = [];
+  for (const assetPattern of config.assets) {
+    const files = await findFiles(assetPattern);
+    for (const file of files) {
+      if ((file.endsWith('.ts') || file.endsWith('.js')) && !file.endsWith('.test.ts') && !file.endsWith('.test.js')) {
+        tsFiles.push(file);
+      }
+    }
+  }
 
-  if (tsFiles.length > 0) {
+  // Убираем дубликаты
+  const uniqueTsFiles = [...new Set(tsFiles)];
+
+  if (uniqueTsFiles.length > 0) {
     console.log(`[${moduleName}] Сборка TypeScript/JavaScript...`);
 
     try {
       const result = await Bun.build({
-        entrypoints: tsFiles,
-        outdir: moduleOutDir,
+        entrypoints: uniqueTsFiles,
+        outdir: join(OUT_DIR, moduleName),
         minify: isProd,
         sourcemap: isDev ? 'inline' : 'none',
         target: 'browser',
@@ -255,9 +270,29 @@ async function buildModule(moduleName: string, config: any) {
 
       if (result.success) {
         console.log(`✅ [${moduleName}] JavaScript/TypeScript успешно собраны.`);
-        for (const entry of tsFiles) {
-          const baseName = basename(entry, '.ts');
-          copiedFiles.push(`${baseName}.js`);
+
+        // Удаляем исходные .ts файлы из выходной директории (оставляем .js)
+        for (const entry of uniqueTsFiles) {
+          if (!entry.endsWith('.ts')) continue;
+
+          // Находим assetPattern, который подходит для этого entry
+          const matchingPattern = config.assets.find((pattern: string) => {
+            const starIdx = pattern.indexOf('*');
+            const base = starIdx >= 0 ? pattern.substring(0, starIdx) : pattern;
+            return entry.startsWith(base);
+          });
+          if (!matchingPattern) continue;
+
+          const starIdx = matchingPattern.indexOf('*');
+          const basePath = starIdx >= 0 ? matchingPattern.substring(0, starIdx) : matchingPattern;
+          const moduleRelativePath = relative(basePath, entry);
+          const tsPath = join(OUT_DIR, moduleName, moduleRelativePath);
+          try {
+            await rm(tsPath);
+            console.log(`🗑️  Удален исходный TS файл: ${moduleRelativePath}`);
+          } catch (error) {
+            // Игнорируем если файла уже нет
+          }
         }
       } else {
         throw new Error(`Сборка TypeScript для модуля ${moduleName} завершилась с ошибками`);
@@ -271,7 +306,6 @@ async function buildModule(moduleName: string, config: any) {
 
   return {
     moduleName,
-    outDir: moduleOutDir,
     files: copiedFiles
   };
 }

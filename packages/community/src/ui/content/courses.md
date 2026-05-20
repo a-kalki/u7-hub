@@ -1,6 +1,6 @@
 ## КУРСЫ ОТ НУРБОЛАТА {.sw-bg-color data-track-view-time="courses-nur"}
 
-1. Если хочешь стать программистом, то тебе [сюда!](/course){data-analytics-action="to_course_from_community"}
+1. Если хочешь стать программистом, то тебе [сюда!](/nur-courses){data-analytics-action="to_course_from_community"}
 1. В будущем планируются курсы по следующим направлениям:
     - электротехника и программирование микроконтроллеров;
     - 3d моделирование, 3d печать, работа с ЧПУ станками;

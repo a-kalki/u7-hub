@@ -45,104 +45,56 @@ try {
   };
 
   // --- Функция для обслуживания статических файлов ---
+  const CONTENT_TYPES: Record<string, string> = {
+    '.css': 'text/css',
+    '.js': 'application/javascript',
+    '.html': 'text/html',
+    '.svg': 'image/svg+xml',
+    '.md': 'text/markdown',
+  };
+
   const serveStaticFile = async (urlPath: string): Promise<Response | null> => {
+    // На проде статику раздаёт nginx
+    if (IS_PROD) return null;
+
     const staticDir = getStaticDir();
-    let filePath = urlPath;
+    let cleanPath = urlPath;
 
     // Убираем trailing slash для корневых запросов
-    if (filePath.endsWith('/')) {
-      filePath = filePath.slice(0, -1);
+    if (cleanPath.endsWith('/') && cleanPath !== '/') {
+      cleanPath = cleanPath.slice(0, -1);
     }
 
-    console.log(`STATIC: Обработка пути: ${filePath}`);
+    console.log(`STATIC: Обработка пути: ${cleanPath}`);
 
-    // Определяем тип запроса: общий файл, курс или сообщество
-    let fileCategory: 'shared' | 'course' | 'community' = 'shared';
-    let relativePath = filePath;
+    // Try-files логика: перебираем кандидаты в порядке приоритета
+    const candidates = [
+      cleanPath,                                                          // /nur-courses/course-landing.css
+      cleanPath === '/' ? '/index.html' : null,                           // / → /index.html
+      cleanPath === '/' ? '/community/index.html' : null,                  // / → fallback на community
+      !cleanPath.includes('.') ? `${cleanPath}/index.html` : null,         // /nur-courses → /nur-courses/index.html
+      !cleanPath.includes('.') ? `${cleanPath}.html` : null,               // /nur-courses → /nur-courses.html
+    ].filter(Boolean) as string[];
 
-    if (filePath.startsWith('/course')) {
-      fileCategory = 'course';
-      relativePath = filePath.replace('/course', '') || '/';
-    } else if (filePath.startsWith('/community')) {
-      fileCategory = 'community';
-      relativePath = filePath.replace('/community', '') || '/';
-    } else if (filePath === '' || filePath === '/') {
-      fileCategory = 'community';
-      relativePath = '/';
-    }
+    for (const candidate of candidates) {
+      const fullPath = join(staticDir, candidate);
+      const file = Bun.file(fullPath);
 
-    // Строим путь к файлу в зависимости от категории
-    if (fileCategory === 'shared') {
-      // Общие файлы лежат прямо в корне dist
-      filePath = join(staticDir, relativePath.substring(1));
-    } else {
-      // Файлы модулей лежат в соответствующих поддиректориях
-      const moduleDir = fileCategory;
-      
-      // Специальные маршруты для HTML страниц
-      if (relativePath === '/' || relativePath === '') {
-        // Главная страница модуля
-        const mainPage = moduleDir === 'course' ? 'course-landing.html' : 'community.html';
-        filePath = join(staticDir, moduleDir, mainPage);
-      } else if (moduleDir === 'course') {
-        // Специфичные маршруты для курсов
-        const routeMap: { [key: string]: string } = {
-          '/details': 'course-details.html'
-        };
-        filePath = join(staticDir, moduleDir, routeMap[relativePath] || relativePath.substring(1));
-      } else {
-        // Для сообщества и остальных случаев
-        filePath = join(staticDir, moduleDir, relativePath.substring(1));
-      }
-    }
+      if (await file.exists()) {
+        console.log(`STATIC: Обслуживается файл: ${fullPath}`);
+        const response = new Response(file);
 
-    // Пробуем найти файл
-    let file = Bun.file(filePath);
-    
-    // Если файл не найден, пробуем добавить расширения
-    if (!(await file.exists())) {
-      // Для HTML страниц пробуем добавить .html
-      if (!filePath.includes('.') && (fileCategory === 'course' || fileCategory === 'community')) {
-        const htmlPath = `${filePath}.html`;
-        const htmlFile = Bun.file(htmlPath);
-        if (await htmlFile.exists()) {
-          filePath = htmlPath;
-          file = htmlFile;
+        // Определяем Content-Type по расширению
+        const ext = Object.keys(CONTENT_TYPES).find(e => candidate.endsWith(e));
+        if (ext) {
+          response.headers.set('Content-Type', CONTENT_TYPES[ext]);
         }
-      }
-      
-      // Для JS файлов пробуем добавить .js (на случай если в HTML указан путь без расширения)
-      if (!(await file.exists()) && filePath.endsWith('/js')) {
-        const jsPath = `${filePath}.js`;
-        const jsFile = Bun.file(jsPath);
-        if (await jsFile.exists()) {
-          filePath = jsPath;
-          file = jsFile;
-        }
+
+        return response;
       }
     }
 
-    // Если файл найден, возвращаем его
-    if (await file.exists()) {
-      console.log(`STATIC: Обслуживается файл: ${filePath}`);
-      const response = new Response(file);
-      
-      // Автоматически определяем Content-Type по расширению
-      if (filePath.endsWith('.css')) {
-        response.headers.set('Content-Type', 'text/css');
-      } else if (filePath.endsWith('.js')) {
-        response.headers.set('Content-Type', 'application/javascript');
-      } else if (filePath.endsWith('.html')) {
-        response.headers.set('Content-Type', 'text/html');
-      } else if (filePath.endsWith('.md')) {
-        response.headers.set('Content-Type', 'text/markdown');
-      }
-      // Можно добавить другие MIME types по необходимости
-      
-      return response;
-    }
-
-    console.log(`STATIC: Файл не найден: ${filePath}`);
+    console.log(`STATIC: Файл не найден: ${cleanPath}`);
     return null;
   };
 
@@ -154,7 +106,7 @@ try {
     async fetch(request: Request): Promise<Response> {
       const url = new URL(request.url);
       const pathname = url.pathname;
-      
+
       console.log(`REQUEST: ${request.method} ${pathname}`);
 
       // Rate Limiting для всех POST запросов
@@ -191,15 +143,14 @@ try {
   console.log(`Локальный URL: http://localhost:${PORT}`);
   console.log(`\nДоступные маршруты:`);
   console.log(`- Сообщество: http://localhost:${PORT}/community`);
-  console.log(`- Курсы: http://localhost:${PORT}/course`);
-  console.log(`- Детали курса: http://localhost:${PORT}/course/details`);
-  console.log(`- Форма: http://localhost:${PORT}/course/form`);
+  console.log(`- Курсы: http://localhost:${PORT}/nur-courses`);
+  console.log(`- Детали курса: http://localhost:${PORT}/nur-courses/details`);
 
   if (IS_PROD) {
     console.log(`\nProduction домены:`);
     console.log(`- Сообщество: https://community.gis-expert.kz`);
-    console.log(`- Курсы: https://course.gis-expert.kz`);
-    console.log(`- Детали курса: https://course.gis-expert.kz/details`);
+    console.log(`- Курсы: https://nur-courses.gis-expert.kz`);
+    console.log(`- Детали курса: https://nur-courses.gis-expert.kz/details`);
   }
 
 } catch (error: any) {

@@ -54,7 +54,7 @@
 ### Изучить сайт самому
 Вся важная информация по курсам собрана в этом сайте.
 
-<a href="/course/details" class="btn btn-secondary" data-analytics-action="to_details_from_landing">Изучить сайт</a>
+<a href="/nur-courses/details" class="btn btn-secondary" data-analytics-action="to_details_from_landing">Изучить сайт</a>
 </div>
 
 <div class="choice-card">
