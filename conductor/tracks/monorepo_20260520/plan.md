@@ -2,16 +2,16 @@
 
 ## Фаза 1: Подготовка структуры монорепозитория
 
-- [ ] Task: Создать структуру директорий `packages/`
-    - [ ] Создать `packages/core/src/`, `packages/community/src/`, `packages/nur-course/src/`
-    - [ ] Создать `packages/core/package.json` (name: `@u7-hub/core`)
-    - [ ] Создать `packages/community/package.json` (name: `@u7-hub/community`)
-    - [ ] Создать `packages/nur-course/package.json` (name: `@u7-hub/nur-course`, зависимости: libphonenumber-js, openai)
-    - [ ] Создать `tsconfig.json` для каждого пакета (extends корневой)
-- [ ] Task: Настроить корневой `package.json` как workspace
-    - [ ] Добавить `"workspaces": ["packages/*"]`
-    - [ ] Удалить `libphonenumber-js` и `openai` из корневых зависимостей
-    - [ ] Выполнить `bun install` для проверки разрешения зависимостей
+- [x] Task: Создать структуру директорий `packages/` [0eefdc8]
+    - [x] Создать `packages/core/src/`, `packages/community/src/`, `packages/nur-course/src/`
+    - [x] Создать `packages/core/package.json` (name: `@u7-hub/core`)
+    - [x] Создать `packages/community/package.json` (name: `@u7-hub/community`)
+    - [x] Создать `packages/nur-course/package.json` (name: `@u7-hub/nur-course`, зависимости: libphonenumber-js, openai)
+    - [x] Создать `tsconfig.json` для каждого пакета (extends корневой)
+- [x] Task: Настроить корневой `package.json` как workspace [0eefdc8]
+    - [x] Добавить `"workspaces": ["packages/*"]`
+    - [x] Удалить `libphonenumber-js` и `openai` из корневых зависимостей
+    - [x] Выполнить `bun install` для проверки разрешения зависимостей
 - [ ] Task: Conductor - User Manual Verification 'Подготовка структуры монорепозитория' (Protocol in workflow.md)
 
 ## Фаза 2: Миграция пакета `@u7-hub/core` (бывший `src/app`)
