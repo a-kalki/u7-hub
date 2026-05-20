@@ -8,22 +8,22 @@ class SimpleImageSlider {
     this.currentIndex = 0;
     this.intervalId = null;
     this.isActive = false;
-    
+
     this.init();
   }
 
   init() {
     if (this.slides.length <= 1) return;
-    
+
     // Определяем начальный активный слайд
-    this.currentIndex = this.slides.findIndex(slide => 
-      slide.style.display === 'block' || getComputedStyle(slide).display === 'block'
+    this.currentIndex = this.slides.findIndex(
+      (slide) => slide.style.display === 'block' || getComputedStyle(slide).display === 'block',
     );
     if (this.currentIndex === -1) this.currentIndex = 0;
-    
+
     // Показываем начальный слайд
     this.showSlide(this.currentIndex);
-    
+
     // Обработчики для точек
     this.dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
@@ -35,22 +35,22 @@ class SimpleImageSlider {
 
   showSlide(index) {
     // Скрываем все слайды
-    this.slides.forEach(slide => slide.style.display = 'none');
-    this.dots.forEach(dot => dot.classList.remove('active'));
-    
+    this.slides.forEach((slide) => (slide.style.display = 'none'));
+    this.dots.forEach((dot) => dot.classList.remove('active'));
+
     // Показываем выбранный слайд
     this.slides[index].style.display = 'block';
     this.dots[index].classList.add('active');
-    
+
     // Обновляем описание из data-атрибута
     const description = this.slides[index].dataset.description;
     if (this.description && description) {
       this.description.textContent = description;
     }
-    
+
     // Показываем описание на 2 секунды
     this.showDescription();
-    
+
     this.currentIndex = index;
   }
 
@@ -70,7 +70,7 @@ class SimpleImageSlider {
 
   startAutoSlide() {
     if (!this.isActive) return;
-    
+
     this.stopAutoSlide();
     this.intervalId = setInterval(() => {
       this.nextSlide();
@@ -120,7 +120,7 @@ class TabSlidersManager {
 
   addSlider(slider) {
     this.sliders.push(slider);
-    
+
     // Синхронизируем клики по точкам
     const dots = slider.container.querySelectorAll('.dot');
     dots.forEach((dot, index) => {
@@ -132,14 +132,14 @@ class TabSlidersManager {
 
   setCurrentIndex(index) {
     this.currentIndex = index;
-    this.sliders.forEach(slider => {
+    this.sliders.forEach((slider) => {
       slider.setCurrentIndex(index);
     });
   }
 
   activate() {
     this.isActive = true;
-    this.sliders.forEach(slider => {
+    this.sliders.forEach((slider) => {
       slider.activate();
       slider.setCurrentIndex(this.currentIndex);
     });
@@ -147,7 +147,7 @@ class TabSlidersManager {
 
   deactivate() {
     this.isActive = false;
-    this.sliders.forEach(slider => {
+    this.sliders.forEach((slider) => {
       slider.deactivate();
     });
   }
@@ -168,9 +168,9 @@ class TabManager {
 
   init() {
     this.initializeSliders();
-    
+
     // Обработчики для кнопок вкладок
-    document.querySelectorAll('.tab-buttons .btn').forEach(btn => {
+    document.querySelectorAll('.tab-buttons .btn').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         const tabName = e.target.dataset.tab;
@@ -189,18 +189,18 @@ class TabManager {
 
   initializeSliders() {
     const allSliders = document.querySelectorAll('.slides');
-    
+
     allSliders.forEach((slidesContainer) => {
       const tabContent = slidesContainer.closest('.tab-content');
       if (!tabContent) return;
-      
+
       const tabName = tabContent.id.replace('-tab', '');
-      
+
       // Создаем менеджер для вкладки если его нет
       if (!this.tabManagers.has(tabName)) {
         this.tabManagers.set(tabName, new TabSlidersManager(tabName));
       }
-      
+
       const slider = new SimpleImageSlider(slidesContainer);
       this.tabManagers.get(tabName).addSlider(slider);
     });
@@ -210,7 +210,7 @@ class TabManager {
     // Сохраняем текущую позицию прокрутки
     this.scrollPositions.set(this.currentTab, {
       top: scrollTop,
-      left: scrollLeft
+      left: scrollLeft,
     });
 
     // Деактивируем текущую вкладку
@@ -228,12 +228,12 @@ class TabManager {
 
   activateTab(tabName) {
     // Обновляем активные кнопки
-    document.querySelectorAll('.tab-buttons .btn').forEach(btn => {
+    document.querySelectorAll('.tab-buttons .btn').forEach((btn) => {
       btn.classList.toggle('active', btn.dataset.tab === tabName);
     });
 
     // Обновляем активный контент
-    document.querySelectorAll('.tab-content').forEach(content => {
+    document.querySelectorAll('.tab-content').forEach((content) => {
       content.classList.toggle('active', content.id === `${tabName}-tab`);
     });
 
