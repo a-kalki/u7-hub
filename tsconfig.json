@@ -14,7 +14,7 @@
     "paths": {
       "@app/*": ["packages/core/src/*"],
       "@community/*": ["packages/community/src/*"],
-      "@course/*": ["src/course/*"]
+      "@course/*": ["packages/nur-course/src/*"]
     }
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "build.ts", "playwright.config.ts"],

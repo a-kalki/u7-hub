@@ -44,7 +44,7 @@
 
 ## Фаза 4: Миграция пакета `@u7-hub/nur-course` (бывший `src/course`)
 
-- [ ] Task: Переместить код `src/course/` → `packages/nur-course/src/`
+- [~] Task: Переместить код `src/course/` → `packages/nur-course/src/`
     - [ ] Переместить все файлы из `src/course/` в `packages/nur-course/src/`
     - [ ] Обновить внутренние импорты
 - [ ] Task: Обновить `tsconfig.json` paths
