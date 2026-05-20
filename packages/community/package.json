@@ -1,0 +1,10 @@
+{
+  "name": "@u7-hub/community",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "dependencies": {},
+  "devDependencies": {}
+}

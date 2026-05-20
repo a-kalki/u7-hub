@@ -3,6 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "workspaces": ["packages/*"],
   "devDependencies": {
     "@happy-dom/global-registrator": "^18.0.1",
     "@playwright/test": "^1.55.1",
@@ -16,12 +17,10 @@
   },
   "dependencies": {
     "happy-dom": "^18.0.1",
-    "libphonenumber-js": "^1.12.18",
     "markdown-it": "^14.1.1",
     "markdown-it-attrs": "^4.3.1",
     "markdown-it-bracketed-spans": "^1.0.1",
-    "markdown-it-container": "^4.0.0",
-    "openai": "^5.23.1"
+    "markdown-it-container": "^4.0.0"
   },
   "scripts": {
     "db:backup": "NODE_ENV=production bun run src/app/db-utils/backup-db.ts",
