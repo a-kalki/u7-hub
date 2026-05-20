@@ -204,6 +204,10 @@ async function buildModule(moduleName: string, config: any) {
 
       const outPath = join(OUT_DIR, page.outputPath);
       await mkdir(dirname(outPath), { recursive: true });
+
+      // Замена плейсхолдера текущим годом
+      html = html.replace(/\{\{CURRENT_YEAR\}\}/g, String(new Date().getFullYear()));
+
       await writeFile(outPath, html);
       console.log(`✅ [${moduleName}] HTML собран из шаблона: ${page.outputPath}`);
       copiedFiles.push(page.outputPath);
@@ -211,7 +215,11 @@ async function buildModule(moduleName: string, config: any) {
       // Просто копия шаблона если нет контента
       const outPath = join(OUT_DIR, page.outputPath);
       await mkdir(dirname(outPath), { recursive: true });
-      await copyFile(page.template, outPath);
+
+      // Для шаблонов без контента — читаем, заменяем плейсхолдер и пишем
+      let tmplHtml = await readFile(page.template, 'utf-8');
+      tmplHtml = tmplHtml.replace(/\{\{CURRENT_YEAR\}\}/g, String(new Date().getFullYear()));
+      await writeFile(outPath, tmplHtml);
       copiedFiles.push(page.outputPath);
     }
   }
