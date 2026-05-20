@@ -12,7 +12,7 @@
     - [x] Добавить `"workspaces": ["packages/*"]`
     - [x] Удалить `libphonenumber-js` и `openai` из корневых зависимостей
     - [x] Выполнить `bun install` для проверки разрешения зависимостей
-- [ ] Task: Conductor - User Manual Verification 'Подготовка структуры монорепозитория' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Подготовка структуры монорепозитория' (Protocol in workflow.md) [bf49888]
 
 ## Фаза 2: Миграция пакета `@u7-hub/core` (бывший `src/app`)
 
