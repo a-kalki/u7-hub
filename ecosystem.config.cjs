@@ -1,7 +1,7 @@
 const projectRoot = process.cwd();
 module.exports = {
   apps : [{
-    name: "gis-expert",
+    name: "u7-hub",
     script: "/home/admin/.bun/bin/bun",
     args: "src/app/server.ts",
     cwd: projectRoot,
