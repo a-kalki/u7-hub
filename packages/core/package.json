@@ -8,6 +8,7 @@
     ".": "./src/index.ts",
     "./db": "./src/db.ts",
     "./repositories/*": "./src/repositories/*.ts",
+    "./ui": "./src/ui/index.ts",
     "./ui/*": "./src/ui/*.ts"
   },
   "imports": {
