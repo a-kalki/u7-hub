@@ -1,0 +1,24 @@
+{
+  "name": "@u7-hub/u7-workshop",
+  "version": "1.0.0",
+  "description": "Сайт коворкинг центра Дедок — лендинг и мастерские",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "tslint": "tsc --noEmit",
+    "ai-context": "bun scripts/prepare-ai-context.ts"
+  },
+  "dependencies": {
+    "openai": "^5.23.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "happy-dom": "^12.10.3",
+    "typescript": "^5.0.0"
+  }
+}

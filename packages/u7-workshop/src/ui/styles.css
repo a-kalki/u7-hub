@@ -1,0 +1,364 @@
+/* Global styles and variables */
+:root {
+  --columns: 3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Styles from app-widget */
+body {
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  margin: 0;
+  padding-top: 40px;
+}
+
+
+h1, h2, h3 {
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+footer {
+  background-color: #f5f5f5;
+  padding: 20px;
+  font-size: 14px;
+  color: #333;
+  border-top: 1px solid #ddd;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-right: 60px;
+}
+
+footer p {
+  margin: 0;
+  line-height: 1.6;
+  text-align: left;
+}
+
+footer .logo {
+  width: 175px;
+  height: auto;
+}
+
+.to-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #ccc;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background-color: #333;
+}
+
+.to-top-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+/* Styles from tabs-bar-widget */
+.tab-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: black;
+  color: white;
+  z-index: 1000;
+  padding: 0;
+}
+
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-buttons {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  flex: 1;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-right: 110px;
+}
+
+.tab-bar .logo {
+  position: absolute;
+  right: 16px;
+  top: 5px;
+  height: 30px;
+  width: auto;
+  filter: invert(1);
+  flex-shrink: 0;
+}
+
+.btn {
+  flex-shrink: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 0px 20px;
+  margin: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.tab-bar button:hover {
+  background-color: #fff;
+  color: black;
+}
+
+.btn.active {
+  background-color: white;
+  color: black;
+}
+
+/* Styles from term-cards-widget */
+.term-cards {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 3), 1fr);
+  gap: 16px;
+  width: 100%;
+  grid-auto-rows: minmax(100px, auto);
+  min-width: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Styles from term-card-entity */
+.term-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 8px;
+  box-sizing: border-box;
+  align-items: stretch;
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+.term-card-title {
+  background-color: #555;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 8px 8px 0 0;
+}
+
+.term-card-body {
+  font-size: 18px;
+  background-color: #f5f5f5;
+  padding: 16px;
+  flex-grow: 1;
+  color: black;
+  border-radius: 0 0 8px 8px;
+}
+
+.term-card:hover {
+  transform: translateY(-2px);
+}
+
+.center {
+  text-align: center;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+
+/* Styles from image-slider-entity */
+.slides {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-screen-image {
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(14px, 3vw, 24px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.description {
+  border-radius: 16px;
+  padding: 0px 32px;
+  color: #333;
+  background: rgba(255, 255, 255, 0.50);
+  white-space: nowrap;
+}
+
+.description-container.top {
+  top: 16px;
+  bottom: auto;
+}
+
+.description-container.bottom {
+  top: auto;
+  bottom: 16px;
+}
+
+.indicator {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.3s;
+}
+
+.dot.active {
+  background: white;
+}
+
+/* Content styles from home-tab */
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.padding-64 {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.black {
+  background-color: #000;
+  color: white;
+}
+
+.black .term-card-title {
+  background-color: #333;
+}
+
+.black .term-card-body {
+  background-color: #222;
+  color: white;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  h1, h2, h3 {
+    letter-spacing: 2px;
+  }
+
+  .term-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .term-card-title, .term-card-body {
+    font-size: 16px;
+  }
+
+  .tab-buttons {
+    margin-right: 90px;
+  }
+  
+  .tab-bar .logo {
+    right: 10px;
+    height: 25px;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+}
+
+@media (max-aspect-ratio: 19/6) {
+  .full-screen-image {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (min-aspect-ratio: 19/6) {
+  .full-screen-image {
+    height: calc(100vh - 40px);
+    width: auto;
+  }
+}
