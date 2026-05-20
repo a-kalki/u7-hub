@@ -1,7 +1,7 @@
 import { describe, it, test, expect, beforeEach, jest } from 'bun:test';
-import { createTestWindow } from '../../../test/setup';
-import { FormFactory } from '../../../test/utils/form-factory';
-import { hasValidationError, getValidationErrorText } from '../../../test/utils/helpers';
+import { createTestWindow } from '../../../../test/setup';
+import { FormFactory } from '../../../../test/utils/form-factory';
+import { hasValidationError, getValidationErrorText } from '../../../../test/utils/helpers';
 import { validateForm, showValidationError, clearValidationErrors } from './form-logic';
 
 describe('Валидация формы', () => {
