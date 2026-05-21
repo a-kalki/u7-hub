@@ -44,7 +44,10 @@ function openTab(tabName: string, updateHistory: boolean = true) {
   // 6. Обновляем ID текущей вкладки
   currentTabId = tabName;
 
-  // 7. Обновляем URL (если не блокировано)
+  // 7. Диспатчим событие для кастомных обработчиков (слайдеры, аналитика)
+  window.dispatchEvent(new CustomEvent('tab-changed', { detail: { tabName } }));
+
+  // 8. Обновляем URL (если не блокировано)
   if (updateHistory) {
     updateURLWithTab(tabName);
   }

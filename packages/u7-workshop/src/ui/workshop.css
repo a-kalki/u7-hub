@@ -1,0 +1,73 @@
+/* ========================================
+   Стили слайдера для Коворкинг-мастерской
+   ======================================== */
+
+/* Контейнер слайдера */
+.slides {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: auto;
+  margin-top: 32px;
+}
+
+/* Изображения слайдера — всегда по ширине контейнера */
+.full-screen-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Контейнер описания и индикаторов */
+.description-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(14px, 3vw, 24px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.description-container.top {
+  top: 16px;
+  bottom: auto;
+}
+
+.description-container.bottom {
+  top: auto;
+  bottom: 16px;
+}
+
+/* Текст описания */
+.description {
+  border-radius: 16px;
+  padding: 0px 32px;
+  color: #333;
+  background: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+/* Индикатор (точки) */
+.indicator {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: white;
+}

@@ -9,6 +9,7 @@ const PROJECT_ROOT = join(import.meta.dir, '..', '..');
 const PKG_CORE = join(PROJECT_ROOT, 'packages/core');
 const PKG_COURSE = join(PROJECT_ROOT, 'packages/nur-course');
 const PKG_COMMUNITY = join(PROJECT_ROOT, 'packages/community');
+const PKG_WORKSHOP = join(PROJECT_ROOT, 'packages/u7-workshop');
 
 // --- Вспомогательная функция для сборки TS через bun build CLI ---
 async function bunBuildCli(options: {
@@ -74,6 +75,19 @@ const MODULES = {
     assets: [],
     dependencies: []
   },
+  'workshop': {
+    pages: [
+      {
+        template: join(PKG_WORKSHOP, 'src/ui/workshop.template.html'),
+        contentDir: join(PKG_WORKSHOP, 'src/ui/content'),
+        outputPath: 'workshop/index.html',
+      }
+    ],
+    assets: [
+      join(PKG_WORKSHOP, 'src/ui/**/*.{css,js,ts,svg,png,jpg}'),
+    ],
+    dependencies: []
+  },
   'nur-courses': {
     pages: [
       {
@@ -120,11 +134,14 @@ async function copyFile(source: string, destination: string) {
 }
 
 async function findFiles(pattern: string): Promise<string[]> {
-  const glob = new Bun.Glob(pattern);
+  const absolutePattern = join(PROJECT_ROOT, pattern);
+  const glob = new Bun.Glob(absolutePattern);
   const files = [];
-  for await (const file of glob.scan(".")) {
-    if (!file.endsWith('.test.ts') && !file.includes('.test.')) {
-      files.push(file);
+  for await (const file of glob.scan(PROJECT_ROOT)) {
+    // file — абсолютный путь, делаем относительным от PROJECT_ROOT
+    const relativeFile = relative(PROJECT_ROOT, file);
+    if (!relativeFile.endsWith('.test.ts') && !relativeFile.includes('.test.')) {
+      files.push(relativeFile);
     }
   }
   return files;
@@ -212,9 +229,14 @@ async function buildModule(moduleName: string, config: any) {
 
         const key = basename(mdFile, '.md');
         const content = await readFile(join(page.contentDir, mdFile), 'utf-8');
-        let rendered = md.render(content);
+        let rendered: string;
+        if (page.rawContent) {
+          rendered = content;
+        } else {
+          rendered = md.render(content);
+        }
 
-        if (mdFile !== 'landing.md') {
+        if (!page.rawContent && mdFile !== 'landing.md') {
           rendered = wrapHtmlSections(rendered);
         }
 
@@ -248,6 +270,9 @@ async function buildModule(moduleName: string, config: any) {
 
     for (const absFile of absAssetFiles) {
       if (absFile.endsWith('.html') || absFile.endsWith('.md') || absFile.includes('.template.')) continue;
+      // Исключаем старый дизайн и бэкап
+      if (absFile.includes('/backup/')) continue;
+      if (absFile.endsWith('/styles.css') || absFile.endsWith('/script.js')) continue;
 
       const starIndex = assetPattern.indexOf('*');
       const basePath = starIndex >= 0 ? assetPattern.substring(0, starIndex) : assetPattern;
