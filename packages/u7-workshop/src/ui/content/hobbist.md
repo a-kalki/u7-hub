@@ -1,4 +1,4 @@
-## НЕМНОГО О ЖИЗНИ {.sw-bg-color data-track-view-time="workshop-hobbist-life"}
+## НЕМНОГО О ЖИЗНИ {.sw-bg-color data-track-view-time="workshop:hobbist:life"}
 
 #### Этап жизни: неведение
 
@@ -28,13 +28,13 @@
 
 Но гранить его придется тебе, мы только инструмент для этого.
 
-## МЫ УСЛОЖНИЛИ ЖИЗНЬ? {.sw-bg-color data-track-view-time="workshop-hobbist-complicate"}
+## МЫ УСЛОЖНИЛИ ЖИЗНЬ? {.sw-bg-color data-track-view-time="workshop:hobbist:complicate"}
 
 С большой долей вероятности вышенаписанное это не про тебя. Ты просто узнал про нас и тебе интересно попробовать себя в мастерской. Сделать что то своими руками. 
 
 Отлично! Мы существуем для этого тоже!
 
-## ХОББИ ЭТО ЗАНЯТИЕ ДЛЯ СЕБЯ {.sw-bg-color data-track-view-time="workshop-hobbist-about"}
+## ХОББИ ЭТО ЗАНЯТИЕ ДЛЯ СЕБЯ {.sw-bg-color data-track-view-time="workshop:hobbist:about"}
 
 В любом случае, в нашу мастерскую приходят потому что это ему интересно.
 
@@ -47,7 +47,7 @@
 1. оттачивание навыка до высокого уровня мастерства (стадия ремесленник);
 1. создание уникальных изделий отражающих частичку тебя (стадия мастер);
 
-## СКОЛЬКО СТОИТ СЧАСТЬЕ УЗНАТЬ СЕБЯ {.sw-bg-color data-track-view-time="workshop-hobbist-pricing"}
+## СКОЛЬКО СТОИТ СЧАСТЬЕ УЗНАТЬ СЕБЯ {.sw-bg-color data-track-view-time="workshop:hobbist:pricing"}
 
 #### Абонемент
 

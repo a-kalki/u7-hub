@@ -4,7 +4,7 @@
   <img src="./content/roadmap.svg" alt="Дорожная карта" class="svg-landscape">
 </div>
 
-## Этап 1. Основы js {.sw-bg-color data-track-view-time="ts-module-1"}
+## Этап 1. Основы js {.sw-bg-color data-track-view-time="nur-course:ts-module:1"}
 
 **План учебы еще в работе у будет уточняться.**
 
@@ -117,18 +117,18 @@
 ### Итог:
 Ты научишься думать как программист и понимать код так, как его понимает компьютер.
 
-## Этап 2. Бизнес задачи на no-code, low-code {.sw-bg-color data-track-view-time="ts-module-2"}
+## Этап 2. Бизнес задачи на no-code, low-code {.sw-bg-color data-track-view-time="nur-course:ts-module:2"}
 Скоро будет!!!
 
-## Этап 3. Продвинутый js {.sw-bg-color data-track-view-time="ts-module-3"}
+## Этап 3. Продвинутый js {.sw-bg-color data-track-view-time="nur-course:ts-module:3"}
 Скоро будет!!!
 
-## Этап 4. Бизнес задачи через ИИ {.sw-bg-color data-track-view-time="ts-module-4"}
+## Этап 4. Бизнес задачи через ИИ {.sw-bg-color data-track-view-time="nur-course:ts-module:4"}
 Скоро будет!!!
 
-## Этап 5. Ts и ООП {.sw-bg-color data-track-view-time="ts-module-5"}
+## Этап 5. Ts и ООП {.sw-bg-color data-track-view-time="nur-course:ts-module:5"}
 Скоро будет!!!
 
-## Этап 6. Командная разработка {.sw-bg-color data-track-view-time="ts-module-6"}
+## Этап 6. Командная разработка {.sw-bg-color data-track-view-time="nur-course:ts-module:6"}
 Скоро будет!!!
 

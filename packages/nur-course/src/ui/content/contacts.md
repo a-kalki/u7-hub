@@ -1,4 +1,4 @@
-## Анкета {.sw-bg-color data-track-view-time="contacts-all"}
+## Анкета {.sw-bg-color data-track-view-time="nur-course:contacts:all"}
 
 Если хочешь попробовать наши курсы (конечно пробуй!), то переходи к нашему боту, он:
 - даст ссылку на телеграм группу школы;
@@ -12,7 +12,7 @@
 
 Переходи по ссылке к боту: [https://t.me/u7_school_bot](https://t.me/u7_school_bot)
 
-## Контакты {.sw-bg-color data-track-view-time="contacts-direct"}
+## Контакты {.sw-bg-color data-track-view-time="nur-course:contacts:direct"}
 Если у тебя возникли вопросы и хочешь обсудить то можно сделать это в группе или лично, я обязательно отвечу:
 
 * Тел: +7 777 287 8182

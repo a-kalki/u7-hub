@@ -1,4 +1,4 @@
-## О ПАРТНЕРСТВЕ {.sw-bg-color data-track-view-time="workshop-partner-about"}
+## О ПАРТНЕРСТВЕ {.sw-bg-color data-track-view-time="workshop:partner:about"}
 
 Мы рассматриваем пространство коворкинг-мастерской как сообщество хоббистов, мастеров и менторов (далее участники).
 
@@ -16,8 +16,10 @@
 
 > Партнер — это человек который делает идею коворкинг-мастерской явью
 
-## КАК СТАТЬ ПАРТНЕРОМ? {.sw-bg-color data-track-view-time="workshop-partner-how"}
+Не бойся, строить бизнес это интересно. Ты не будешь один, есть я, Нурболат, будут и другие.
+
+## КАК СТАТЬ ПАРТНЕРОМ? {.sw-bg-color data-track-view-time="workshop:partner:how"}
 
 Коворкинг-мастерская является составной частью сообщества `u7-hub` и будет развиваться на правилах саморегуляции описанных на его странице.
 
-Почитайте правила саморегуляции сообщества <a href="/community" data-analytics-action="link-to-community">перейдя сюда</a>.
+Почитайте раздел "Правила саморегуляции" сообщества <a href="/community#communities" data-analytics-action="link-to-community">перейдя сюда</a>.

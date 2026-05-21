@@ -1,4 +1,4 @@
-## ДУША {.sw-bg-color data-track-view-time="workshop-home-soul"}
+## ДУША {.sw-bg-color data-track-view-time="workshop:home:soul"}
 
 > Душа - это про нас, что для нас важно
 
@@ -8,7 +8,7 @@
 
 Одним из результатов этого является эта коворкинг-мастерская.
 
-## ТЕЛО {.sw-bg-color data-track-view-time="workshop-home-body"}
+## ТЕЛО {.sw-bg-color data-track-view-time="workshop:home:body"}
 
 > Тело — это про форму, что из себя представляем
 
@@ -20,7 +20,7 @@
 
 - **Коворкинг-мастерская**: это синтез этих двух идей. Место где люди разных профессий не просто работают, а взаимодействуют, делясь навыками, идеями и энергией.
 
-## МИССИЯ {.sw-bg-color data-track-view-time="workshop-home-mission"}
+## МИССИЯ {.sw-bg-color data-track-view-time="workshop:home:mission"}
 
 > Миссия — это про смыслы, для чего мы существуем
 
@@ -28,7 +28,7 @@
 
 > Слоган — мы работаем чтобы вы творили
 
-## ВИДЕНИЕ {.sw-bg-color data-track-view-time="workshop-home-vision"}
+## ВИДЕНИЕ {.sw-bg-color data-track-view-time="workshop:home:vision"}
 
 > Видение — это про цель, про будущее, каким оно станет
 
@@ -40,7 +40,7 @@
 
 Возможно мы даже будем помогать знаниями, опытом и деньгами открываться новым коворкинг-центрам в других городах.
 
-## НАШИ ПРАВИЛА {.sw-bg-color data-track-view-time="workshop-home-rules"}
+## НАШИ ПРАВИЛА {.sw-bg-color data-track-view-time="workshop:home:rules"}
 
 Чтобы коворкинг мастерская росла и крепла, нужен ответственный подход от всех участников. Соблюдай наши правила, они не сложные для понимания, но довольно сложны для исполнения:
 

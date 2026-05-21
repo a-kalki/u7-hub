@@ -1,4 +1,4 @@
-## МИССИЯ {.sw-bg-color data-track-view-time="course-mission-mission"}
+## МИССИЯ {.sw-bg-color data-track-view-time="nur-course:mission:mission"}
 
 Я хочу учить программированию потому что:
 1. мне нравится учить, делиться знаниями;
@@ -13,7 +13,7 @@
 
 А еще делаю это потому что: [я знаю что могу это сделать]{.important}.
 
-## Цель {.sw-bg-color data-track-view-time="course-mission-target"}
+## Цель {.sw-bg-color data-track-view-time="nur-course:mission:target"}
 
 Я не просто учу программированию, моя задача выстроить обучение так:
 - чтобы ты достаточно глубоко понимал программирование;
@@ -23,6 +23,6 @@
 
 Т.е. конечная цель курсов, чтобы ты стал специалистом, умел работать в команде, мог на этом зарабатывать и приносить пользу обществу.
 
-## ОБЯЗАТЕЛЬСТВА {.sw-bg-color data-track-view-time="course-mission-obligations"}
+## ОБЯЗАТЕЛЬСТВА {.sw-bg-color data-track-view-time="nur-course:mission:obligations"}
 
 По окончанию курсов ты ничем мне не обязан, но вполне возможно мы вместе будем работать над общими проектами.

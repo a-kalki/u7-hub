@@ -4,7 +4,7 @@
 
 Для твоего удобства я добавил выше фильтрацию.
 
-## ОТЗЫВЫ {.sw-bg-color data-track-view-time="reviews-all"}
+## ОТЗЫВЫ {.sw-bg-color data-track-view-time="nur-course:reviews:all"}
 
 <div data-review-type="student">
 <div class="review-header">

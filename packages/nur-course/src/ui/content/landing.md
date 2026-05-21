@@ -1,5 +1,5 @@
 <!-- Секция 1: Герой -->
-<div class="container alt-bg" data-track-view-time="landing-intro">
+<div class="container alt-bg" data-track-view-time="nur-course:landing:intro">
 
 # Начни путь в IT <span class="highlight">бесплатно</span>,<br>вместе с ментором.
 
@@ -11,7 +11,7 @@
 </div>
 
 <!-- Секция 2: Миссия -->
-<div class="container" data-track-view-time="landing-mission">
+<div class="container" data-track-view-time="nur-course:landing:mission">
 
 ## Почему я этим занимаюсь?
 
@@ -39,7 +39,7 @@
 </div>
 
 <!-- Секция 3: Объединенный блок информации и ИИ-ассистента -->
-<div class="container alt-bg" id="ai-chat-section" data-track-view-time="landing-info-chat">
+<div class="container alt-bg" id="ai-chat-section" data-track-view-time="nur-course:landing:info-chat">
 
 ## Хочешь больше подробностей?
 
@@ -69,7 +69,7 @@
 </div>
 
 <!-- Секция 5: Призыв к действию -->
-<div class="container" data-track-view-time="landing-cta">
+<div class="container" data-track-view-time="nur-course:landing:cta">
 
 ## Готов получить новый жизненный опыт?
 

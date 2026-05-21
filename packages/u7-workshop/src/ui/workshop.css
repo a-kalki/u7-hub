@@ -71,3 +71,36 @@
 .dot.active {
   background: white;
 }
+
+/* Моноширинный текст и code — как в community */
+code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  background: #f0f0f0;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  background: #f0f0f0;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.black code {
+  background: #333;
+  color: #fff;
+}
+
+.black pre {
+  background: #333;
+}

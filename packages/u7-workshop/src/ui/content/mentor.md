@@ -1,4 +1,4 @@
-## О МЕНТОРАХ {.sw-bg-color data-track-view-time="workshop-mentor-about"}
+## О МЕНТОРАХ {.sw-bg-color data-track-view-time="workshop:mentor:about"}
 
 Мы все знаем что есть люди — учителя от бога. Это люди которые хорошо знают свой предмет и через любовь передают знания своим ученикам.
 
@@ -18,7 +18,7 @@
 
 > Ментор — человек меняющий мир через воспитание нового поколения сильных личностей
 
-## БИЗНЕС МОДЕЛЬ {.sw-bg-color data-track-view-time="workshop-mentor-business-model"}
+## БИЗНЕС МОДЕЛЬ {.sw-bg-color data-track-view-time="workshop:mentor:business-model"}
 
 Бизнес модель (отношения между мастерской и ментором) такие же как и с Мастерами. Вы пользуетесь мастерской и оплачиваете по факту, от выручки.
 
