@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta name="page-name" content="craftyard">
+  <meta name="page-variant" content="v1_initial">
+  <meta charset="UTF-8">
+  <title>CraftYard — u7 hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="/common.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="CraftYard — пространство для создания и развития">
+  <meta name="keywords"
+    content="craftyard, коворкинг, мастерская, сообщество, уральск, творчество, производство">
+</head>
+
+<body>
+
+  <header class="w3-container w3-center w3-padding-32 w3-black">
+    <h1>CraftYard</h1>
+    <p>Пространство для создания и развития</p>
+  </header>
+
+  <div class="tabs scrollable-tabs">
+    <div class="tabs-inner-wrapper">
+      <button class="tablink w3-white" data-tabname="mission">Миссия</button>
+      <button class="tablink" data-tabname="coworkings">Коворкинги</button>
+      <button class="tablink" data-tabname="actors">Акторы</button>
+      <button class="tablink" data-tabname="partners">Партнёры</button>
+    </div>
+  </div>
+
+  <div id="mission" class="tabcontent" style="display:block">
+    <!-- CONTENT:mission -->
+  </div>
+
+  <div id="coworkings" class="tabcontent" style="display:none">
+    <!-- CONTENT:coworkings -->
+  </div>
+
+  <div id="actors" class="tabcontent" style="display:none">
+    <!-- CONTENT:actors -->
+  </div>
+
+  <div id="partners" class="tabcontent" style="display:none">
+    <!-- CONTENT:partners -->
+  </div>
+
+  <div class="tabs scrollable-tabs" style="margin-top: 64px;">
+    <div class="tabs-inner-wrapper">
+      <button class="tablink w3-white" data-tabname="mission">Миссия</button>
+      <button class="tablink" data-tabname="coworkings">Коворкинги</button>
+      <button class="tablink" data-tabname="actors">Акторы</button>
+      <button class="tablink" data-tabname="partners">Партнёры</button>
+    </div>
+  </div>
+
+  <footer class="w3-container w3-center w3-padding-32 w3-black">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-rights">© U7-HUB — {{CURRENT_YEAR}}</div>
+        <div class="footer-slogan">Развиваем it помогая бизнесу</div>
+      </div>
+      <div class="footer-contacts">
+        <a href="tel:+77772878182" class="contact-link">+7 777 287 8182 Нурболат</a>
+      </div>
+    </div>
+    <a href="#top" class="w3-button w3-circle w3-white footer-button">↑</a>
+  </footer>
+
+  <!-- Общие скрипты -->
+  <script type="module" src="/user-session-manager.js"></script>
+  <script type="module" src="/tab-manager.js"></script>
+  <script type="module" src="/tracker.js"></script>
+
+</body>
+
+</html>

@@ -10,6 +10,7 @@ const PKG_CORE = join(PROJECT_ROOT, 'packages/core');
 const PKG_COURSE = join(PROJECT_ROOT, 'packages/nur-course');
 const PKG_COMMUNITY = join(PROJECT_ROOT, 'packages/community');
 const PKG_WORKSHOP = join(PROJECT_ROOT, 'packages/u7-workshop');
+const PKG_CRAFTYARD = join(PROJECT_ROOT, 'packages/craftyard');
 
 // --- Вспомогательная функция для сборки TS через bun build CLI ---
 async function bunBuildCli(options: {
@@ -86,6 +87,17 @@ const MODULES = {
     assets: [
       join(PKG_WORKSHOP, 'src/ui/**/*.{css,js,ts,svg,png,jpg}'),
     ],
+    dependencies: []
+  },
+  'craftyard': {
+    pages: [
+      {
+        template: join(PKG_CRAFTYARD, 'src/ui/craftyard.template.html'),
+        contentDir: join(PKG_CRAFTYARD, 'src/ui/content'),
+        outputPath: 'craftyard/index.html',
+      }
+    ],
+    assets: [],
     dependencies: []
   },
   'nur-courses': {
