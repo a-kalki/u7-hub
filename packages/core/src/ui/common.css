@@ -19,7 +19,7 @@ a,
 div,
 button,
 footer {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 footer {
@@ -221,7 +221,7 @@ h6 {
   }
 
   .scrollable-tabs.show-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.4);
+    background: #999;
     border-radius: 2px;
   }
 
@@ -285,7 +285,7 @@ h6 {
 
 /* Индикатор активной вкладки */
 .tablink::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -380,7 +380,7 @@ blockquote p {
 
 /* Подсветка при фокусе для клавиатурной навигации */
 .tablink:focus-visible {
-  outline: 2px solid #4D90FE;
+  outline: 2px solid #4d90fe;
   outline-offset: 2px;
   z-index: 1;
 }
@@ -398,10 +398,13 @@ blockquote p {
   width: 100%;
   overflow-x: auto;
   margin-bottom: 2em;
+  box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
 }
 
-.svg-container img {
+.svg-container img,
+.svg-container object,
+.svg-container svg {
   display: block;
   max-width: 100%;
   height: auto;
@@ -432,4 +435,56 @@ strong {
   background: #ddd;
   border-radius: 4px;
   padding: 0.05em 0.3em;
+}
+
+/* Таблицы */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+
+th {
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+  border-bottom: 2px solid #666;
+}
+
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Первая колонка (старое) — приглушённый */
+td:first-child {
+  color: #666;
+}
+
+/* Вторая колонка (новое) — яркий */
+td:last-child {
+  color: #111;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  table {
+    font-size: 0.9em;
+  }
+
+  th,
+  td {
+    padding: 10px 10px;
+  }
 }

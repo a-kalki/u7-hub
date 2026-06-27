@@ -150,9 +150,11 @@
     <!-- Стили для блоков -->
     <style
        id="style1">
-      .module { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; rx: 8; ry: 8; }
-      .module-text { font-family: 'Arial', sans-serif; font-size: 13px; fill: #1565c0; text-anchor: middle; dominant-baseline: middle; }
-      .module-title { font-weight: bold; font-size: 14px; fill: #0d47a1; }
+      .module { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; rx: 8; ry: 8; cursor: pointer; }
+      .module:hover { fill: #bbdefb; stroke-width: 3; }
+      .module.active { fill: #90caf9; stroke: #0d47a1; stroke-width: 3; }
+      .module-text { pointer-events: none; font-family: 'Arial', sans-serif; font-size: 13px; fill: #1565c0; text-anchor: middle; dominant-baseline: middle; }
+      .module-title { pointer-events: none; font-weight: bold; font-size: 14px; fill: #0d47a1; }
       .solid-arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
       .dash-arrow { fill: none; stroke: #666; stroke-width: 1.5; stroke-dasharray: 6 4; marker-end: url(#arrowhead-dash); }
       .group-bg-technical { fill: #f3e5f5; stroke: #9c27b0; stroke-width: 2; rx: 10; ry: 10; stroke-dasharray: 8 4; }
@@ -204,13 +206,14 @@
      text-anchor="middle"
      id="text3">Технический стек</text>
   <!-- Модуль 1 -->
-  <rect
+  <g class="phase-link" data-phase="phase1">
+<rect
      class="module"
      x="92"
      y="76"
      width="220"
      height="65"
-     id="rect3" />
+     id="phase1-rect" />
   <text
      x="202"
      y="104"
@@ -223,14 +226,16 @@
      class="module-text"
      text-anchor="middle"
      id="text5">Основы JS</text>
+  </g>
   <!-- Модуль 3 -->
-  <rect
+  <g class="phase-link" data-phase="phase3">
+<rect
      class="module"
      x="92"
      y="181"
      width="220"
      height="65"
-     id="rect5" />
+     id="phase3-rect" />
   <text
      x="202"
      y="209"
@@ -243,14 +248,16 @@
      class="module-text"
      text-anchor="middle"
      id="text7">Продвинутый JS</text>
+  </g>
   <!-- Модуль 5 -->
-  <rect
+  <g class="phase-link" data-phase="phase5">
+<rect
      class="module"
      x="92"
      y="286"
      width="220"
      height="65"
-     id="rect7" />
+     id="phase5-rect" />
   <text
      x="202"
      y="314"
@@ -263,6 +270,7 @@
      class="module-text"
      text-anchor="middle"
      id="text9">TS и ООП</text>
+  </g>
   <!-- ===== БЛОК "Бизнес и ИИ" (справа) ===== -->
   <rect
      class="group-bg-business"
@@ -281,13 +289,14 @@
      text-anchor="middle"
      id="text10">Бизнес стек</text>
   <!-- Модуль 2 -->
-  <rect
+  <g class="phase-link" data-phase="phase2">
+<rect
      class="module"
      x="477"
      y="76"
      width="220"
      height="65"
-     id="rect10" />
+     id="phase2-rect" />
   <text
      x="587"
      y="104"
@@ -300,14 +309,16 @@
      class="module-text"
      text-anchor="middle"
      id="text12">Low-code, now-code</text>
+  </g>
   <!-- Модуль 4 -->
-  <rect
+  <g class="phase-link" data-phase="phase4">
+<rect
      class="module"
      x="477"
      y="181"
      width="220"
      height="65"
-     id="rect12" />
+     id="phase4-rect" />
   <text
      x="587"
      y="209"
@@ -324,14 +335,16 @@
        x="587"
        y="223"
        id="tspan57">ИИ и код</tspan></text>
+  </g>
   <!-- Модуль 6 -->
-  <rect
+  <g class="phase-link" data-phase="phase6">
+<rect
      class="module"
      x="477"
      y="286"
      width="220"
      height="65"
-     id="rect14" />
+     id="phase6-rect" />
   <text
      x="587"
      y="314"
@@ -344,6 +357,7 @@
      class="module-text"
      text-anchor="middle"
      id="text16">Командная разработка</text>
+  </g>
   <!-- ===== СТРЕЛКИ ===== -->
   <!-- Основной маршрут: M1 → M2 → M3 → M4 → M5 → M6 -->
   <!-- M5 из M3 через M6 -->
