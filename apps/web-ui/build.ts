@@ -125,6 +125,7 @@ const MODULES = {
 // Общие зависимости (будут в корне dist)
 const SHARED_DEPENDENCIES = [
   join(PKG_CORE, 'src/ui/common.css'),
+  join(PKG_CORE, 'src/ui/favicon.svg'),
   join(PKG_CORE, 'src/ui/tracker.ts'),
   join(PKG_CORE, 'src/ui/user-session-manager.ts'),
   join(PKG_CORE, 'src/ui/tab-manager.ts')
