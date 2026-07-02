@@ -32,7 +32,7 @@
 
 Я спонсирую готовой мастерской. Я почва.
 
-## ЖЕЛУДИ — ОРГАНИЗАТОРЫ {.sw-bg-color data-track-view-time="workshop:sponsor:partners"}
+## ЖЕЛУДИ — ОРГАНИЗАТОРЫ {.sw-bg-color data-track-view-time="workshop:sponsor:organizers"}
 
 Верю, что в нашем городе есть люди которые захотят развивать этот бизнес. Возможно это ты.
 

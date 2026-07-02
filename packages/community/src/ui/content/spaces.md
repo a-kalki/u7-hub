@@ -1,11 +1,11 @@
 Для реализации Миссии и Видения необходимо развивать несколько направлений — физических пространств сообщества.
 
-## IT КОВОРКИНГ {.sw-bg-color data-track-view-time="community:program:coworking"}
+## IT КОВОРКИНГ {.sw-bg-color data-track-view-time="community:spaces:coworking"}
 [IT коворкинг]{.term} — физическое пространство куда любой it-специалист может прийти и поработать, даже в личных целях:
 - доступ к пространству и интернету бесплатно;
 - просто соблюдайте правила сообщества.
 
-## КУРСЫ {.sw-bg-color data-track-view-time="community:program:courses"}
+## КУРСЫ {.sw-bg-color data-track-view-time="community:spaces:courses"}
 
 [Курсы]{.term} — обобщающее наименование учебного процесса позволяющая получить определенный it-навык.
 
@@ -17,7 +17,7 @@
 - ментор вправе устанавливать уточняющие правила для курсов не конфликтующих с общепринятыми в сообществе; 
 - студент обязан придерживаться этих правил; 
 
-## МАСТЕРСКИЕ {.sw-bg-color data-track-view-time="community:program:workshops"}
+## МАСТЕРСКИЕ {.sw-bg-color data-track-view-time="community:spaces:workshops"}
 
 [Мастерская]{.term} — это физическое пространство оборудованное инструментами.
 
@@ -39,13 +39,13 @@
 
 Готов внести их на безвозмездной основе для старта мастерских сообщества.
 
-## СЕРВЕРНАЯ {.sw-bg-color data-track-view-time="community:program:server-room"}
+## СЕРВЕРНАЯ {.sw-bg-color data-track-view-time="community:spaces:server-room"}
 
 [Серверная]{.term} — это физическое пространство с мощными компьютерами подключенными к сети.
 
 Позволит it-сообществу развивать свои навыки и применять их для реализации Миссии и Видения не находясь в сильной зависимости от облачных сервисов. 
 
-## СТАРТАПЫ {.sw-bg-color data-track-view-time="community:program:startups"}
+## СТАРТАПЫ {.sw-bg-color data-track-view-time="community:spaces:startups"}
 
 [Стартап]{.term} — это бизнес с новой идеей или новой бизнес моделью (с определенной гипотезой) которому еще предстоит доказать свою жизнеспособность.
 
