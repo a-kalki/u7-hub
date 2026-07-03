@@ -16,5 +16,5 @@
 Если у тебя возникли вопросы и хочешь обсудить то можно сделать это в группе или лично, я обязательно отвечу:
 
 * Тел: +7 777 287 8182
-* Telegram: [https://t.me/anzUralsk](https://t.me/anzUralsk){target="_blank"}
+* Telegram: [https://t.me/iklak_a](https://t.me/iklak_a){target="_blank"}
 
