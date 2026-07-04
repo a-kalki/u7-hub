@@ -16,5 +16,5 @@
 Если у тебя возникли вопросы и хочешь обсудить то можно сделать это в группе или лично, я обязательно отвечу:
 
 * Тел: +7 777 287 8182
-* Telegram: [https://t.me/iklak_a](https://t.me/iklak_a){target="_blank"}
+* Telegram: [https://t.me/a_kalki](https://t.me/a_kalki){target="_blank"}
 

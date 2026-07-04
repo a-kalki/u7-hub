@@ -116,7 +116,7 @@ U7-HUB
 
 Нурболат
 Тел: +7 777 287 8182
-https://t.me/iklak_a
+https://t.me/a_kalki
 ```
 
 ---
@@ -213,7 +213,7 @@ https://t.me/iklak_a
 
 Нурболат
 +7 777 287 8182
-t.me/iklak_a
+t.me/a_kalki
 u7-hub.kz
 ```
 
@@ -242,6 +242,6 @@ u7-hub.kz
 ## КОНТАКТЫ
 
 - **Сайт:** [u7-hub.kz](https://u7-hub.kz)
-- **Telegram:** [t.me/iklak_a](https://t.me/iklak_a)
+- **Telegram:** [t.me/a_kalki](https://t.me/a_kalki)
 - **Бот школы:** [t.me/u7_school_bot](https://t.me/u7_school_bot)
 - **Телефон:** +7 777 287 8182
