@@ -45,6 +45,13 @@
       "name": "@u7-hub/core",
       "version": "1.0.0",
     },
+    "packages/craftyard": {
+      "name": "@u7-hub/craftyard",
+      "version": "1.0.0",
+      "dependencies": {
+        "@u7-hub/core": "workspace:*",
+      },
+    },
     "packages/nur-course": {
       "name": "@u7-hub/nur-course",
       "version": "1.0.0",
@@ -107,6 +114,8 @@
     "@u7-hub/community": ["@u7-hub/community@workspace:packages/community"],
 
     "@u7-hub/core": ["@u7-hub/core@workspace:packages/core"],
+
+    "@u7-hub/craftyard": ["@u7-hub/craftyard@workspace:packages/craftyard"],
 
     "@u7-hub/nur-course": ["@u7-hub/nur-course@workspace:packages/nur-course"],
 
