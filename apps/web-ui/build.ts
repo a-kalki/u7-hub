@@ -8,6 +8,7 @@ import mdSpans from 'markdown-it-bracketed-spans';
 const PROJECT_ROOT = join(import.meta.dir, '..', '..');
 const PKG_CORE = join(PROJECT_ROOT, 'packages/core');
 const PKG_COURSE = join(PROJECT_ROOT, 'packages/nur-course');
+const PKG_HUB = join(PROJECT_ROOT, 'packages/hub');
 const PKG_COMMUNITY = join(PROJECT_ROOT, 'packages/community');
 const PKG_WORKSHOP = join(PROJECT_ROOT, 'packages/u7-workshop');
 const PKG_CRAFTYARD = join(PROJECT_ROOT, 'packages/craftyard');
@@ -65,6 +66,17 @@ console.log(`📂 Выходная директория: ${OUT_DIR}`);
 
 // --- Конфигурация модулей ---
 const MODULES = {
+  hub: {
+    pages: [
+      {
+        template: join(PKG_HUB, 'src/ui/hub.template.html'),
+        contentDir: join(PKG_HUB, 'src/ui/content'),
+        outputPath: 'index.html',
+      }
+    ],
+    assets: [],
+    dependencies: []
+  },
   community: {
     pages: [
       {

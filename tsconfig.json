@@ -16,6 +16,7 @@
     { "path": "packages/core" },
     { "path": "packages/nur-course" },
     { "path": "packages/community" },
+    { "path": "packages/hub" },
     { "path": "apps/web-ui" }
   ]
 }

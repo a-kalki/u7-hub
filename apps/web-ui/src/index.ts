@@ -71,7 +71,6 @@ try {
     const candidates = [
       cleanPath,
       cleanPath === '/' ? '/index.html' : null,
-      cleanPath === '/' ? '/community/index.html' : null,
       !cleanPath.includes('.') ? `${cleanPath}/index.html` : null,
       !cleanPath.includes('.') ? `${cleanPath}.html` : null,
     ].filter(Boolean) as string[];
@@ -138,6 +137,7 @@ try {
   console.log(`Сервер запущен на порту ${PORT}`);
   console.log(`Локальный URL: http://localhost:${PORT}`);
   console.log(`\nДоступные маршруты:`);
+  console.log(`- Hub (главная): http://localhost:${PORT}/`);
   console.log(`- Сообщество: http://localhost:${PORT}/community`);
   console.log(`- Курсы: http://localhost:${PORT}/nur-courses`);
   console.log(`- Детали курса: http://localhost:${PORT}/nur-courses/details`);

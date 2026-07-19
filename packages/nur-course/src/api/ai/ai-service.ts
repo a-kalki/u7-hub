@@ -36,7 +36,7 @@ const CONTENT_FILES = {
       program: 'program.md',
       communities: 'communities.md',
       courses: 'courses.md',
-      gov: 'gov.md',
+      roadmap: 'roadmap.md',
     },
   },
 };
@@ -74,8 +74,8 @@ const TOPIC_KEYWORDS: Record<string, { category: ContentCategory; file: string }
     { category: 'community', file: 'program' },
     { category: 'community', file: 'courses' },
   ],
-  gov: [
-    { category: 'community', file: 'gov' },
+  nurbolatRoadmap: [
+    { category: 'community', file: 'roadmap' },
   ],
 };
 
@@ -160,11 +160,12 @@ const KEYWORD_MAP: Record<string, keyof typeof TOPIC_KEYWORDS> = {
   серверн: 'community',
   правила: 'community',
 
-  // Государство
-  государств: 'gov',
-  гипотез: 'gov',
-  эффективность: 'gov',
-  госпрограм: 'gov',
+  // Роадмап Нурболата (взаимодействие с государством)
+  государств: 'nurbolatRoadmap',
+  гипотез: 'nurbolatRoadmap',
+  эффективность: 'nurbolatRoadmap',
+  госпрограм: 'nurbolatRoadmap',
+  'роадмап нурболат': 'nurbolatRoadmap',
 };
 
 export abstract class AIService {
